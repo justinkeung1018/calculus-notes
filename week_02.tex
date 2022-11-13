@@ -1,0 +1,516 @@
+\chapter{Sequences}
+
+% ==================================================================================================
+
+\section{Definition}
+A sequence is a specific type of function. A function is a specific type of binary relations. All sequences are functions, and all functions are binary relations, but not all binary relations are functions. Are all functions sequences?
+\begin{definition}
+  A sequence is a function $f:\N\mapsto\R$. For convenience, in this course we define a sequence to be $f:\N^+\mapsto\R$ instead.
+\end{definition}
+\begin{notation}
+  We can also denote a sequence as $(a_n)_{n\geq 1}$, where $a_n = f(n)$. Writing $a_n$ or $a_1, a_2, ...$ is also fine as long as it is clear enough that they denote a sequence.
+\end{notation}
+
+% ==================================================================================================
+
+\section{Monotonicity}
+\begin{definition}
+  A sequence is increasing $\iff$ $a_{n+1}\geq a_n\forall n\geq 1$.
+\end{definition}
+\begin{definition}
+  A sequence is decreasing $\iff$ $a_{n+1}\leq a_n\forall n\geq 1$.
+\end{definition}
+\begin{definition}
+  A sequence is monotonic $\iff$ it is either increasing or decreasing (or both).
+\end{definition}
+\begin{definition}
+  A sequence is strictly increasing $\iff$ $a_{n+1}>a_n\forall n\geq 1$.
+\end{definition}
+\begin{definition}
+  A sequence is decreasing $\iff$ $a_{n+1}<a_n\forall n\geq 1$.
+\end{definition}
+
+% ==================================================================================================
+
+\section{Convergence and divergence}
+\begin{definition}
+  A sequence converges if it converges to a limit $l \in \R$, $\infty$, or $-\infty$. A sequence diverges if it does not converge.
+\end{definition}
+
+% --------------------------------------------------------------------------------------------------
+
+\subsection{$\epsilon - N$ definition of convergence}
+Let $(a_n)_{n \geq 1}$ be a sequence.
+\begin{definition}
+  $(a_n)_{n \geq 1}$ converges to a limit $l$ if and only if
+  \[
+    \forall \epsilon > 0, \exists N \in \N (\forall n \in \N(n > N \implies \abs{a_n - l} < \epsilon))
+  \]
+  We denote this as $\lim_{n \to \infty} a_n = l$ or $(a_n)_{n \geq 1} \to l$. As above, $a_n \to l$ would also be fine. 
+\end{definition}
+Note that $n$ should be strictly greater than $N$.
+\begin{intuition}
+  If somebody gives us an arbitrary $\epsilon > 0$, then we can always find an $N$ such that every term after that will be within $\epsilon$ of the limit. So if $\epsilon$ is very close to 0, then this guarantees that after some point, all terms in the sequence will be very close to the limit.
+\end{intuition}
+The statement of the definition itself isn't very helpful when we try to prove limits with it. A general template for answering problems is as follows:
+\begin{template}
+  Given some $\epsilon > 0$, we want to find limit $l$ and some $N \in \N$ such that $\forall n > N, \abs{a_n - l} < \epsilon$. We speculate that $l = \text{[some value]}$. Now,
+  \begin{align*}
+    \abs{a_n - l} < \epsilon &\iff \text{[substitute $a_n$ and $l$]} \\
+    &\iff \text{[simplify]} \\
+    &\iff \text{[remove the absolute operators and justify]} \\
+    &\iff ... \\
+    &\iff n > \text{[some function of $\epsilon$, let's call this $N(\epsilon)$]} \\
+  \end{align*}
+  Choose $N \in \N$ such that $N > N(\epsilon)$. Then $\forall n > N, n > N(\epsilon)$.
+  \begin{align*}
+    \abs{a_n - l} &= ... \\
+    &< \epsilon \\
+  \end{align*}
+  Since $\epsilon$ arbitrary, $\forall \epsilon > 0, \exists N \in \N (\forall n \in \N (n > N \implies \abs{a_n - l} < \epsilon))$, where $l = \text{blah}$. So limit is blah.
+\end{template}
+If the question gives us the limit and asks us to prove it directly, just change around the sentences a bit.
+\begin{eg}
+  (MMT 1, 6(a)) Let $\alpha$ be a positive, real constant. Use a direct proof to show that the sequence $(a_n)_{n \geq 1} = (n ^ {-\alpha})$ converges to 0 as $n$ tends to infinity.
+  \begin{proof}
+    Given some $\epsilon > 0$, we want to find some $N \in \N$ such that $\forall n > N, \abs{a_n - l} < \epsilon$, where $l = 0$. Now,
+    \begin{align*}
+      \abs{a_n - l} < \epsilon &\iff  \abs{n ^ {-\alpha} - 0} < \epsilon \\
+      &\iff \abs{\frac{1}{n ^ \alpha}} < \epsilon \\
+      &\iff \frac{1}{n ^ \alpha} < \epsilon && \text{since $n > 0 \implies \frac{1}{n ^ \alpha} > 0$} \\
+      &\iff n ^ \alpha > \frac{1}{\epsilon} \\
+      &\iff n > \frac{1}{\epsilon ^ \alpha} = \epsilon ^ {-\alpha}
+    \end{align*}
+    Choose $N \in \N$ such that $N > \epsilon ^ {-\frac{1}{\alpha}}$. Then $\forall n > N, n > \epsilon ^ {-\frac{1}{\alpha}}$.
+    \begin{align*}
+      \abs{a_n - l} &= \abs{n ^ {-\alpha} - 0} \\
+      &= \frac{1}{n ^ \alpha} && \text{from above} \\
+      &< \frac{1}{(\epsilon ^ {-\frac{1}{\alpha}}) ^ \alpha} \\
+      &= \epsilon
+    \end{align*}
+    Since $\epsilon$ arbitrary, $\forall \epsilon > 0, \exists N \in \N (\forall n \in \N (n > N \implies \abs{a_n - l} < \epsilon))$. So limit is 0.
+  \end{proof}
+\end{eg}
+
+% --------------------------------------------------------------------------------------------------
+
+\subsection{Converging to $\infty$ and $-\infty$}
+\begin{definition}
+  $(a_n)_{n \geq 1}$ converges to $\infty$ if and only if
+  \[
+    \forall r \in \R, \exists N \in \N (\forall n \in \N (n \geq N \implies a_n > r))
+  \]
+\end{definition}
+Note that this time, the requirement is $n$ greater than or equal to $N$, but not strictly greater than $N$. I don't know why this is the case, but we'll just accept it. Maybe the slides are wrong.
+\begin{intuition}
+  If $r$ is arbitrarily large, then this guarantees that after some point, all the terms will be larger than the arbitrarily large $r$, i.e. mega large.
+\end{intuition}
+\begin{eg}
+  Use a direct proof to show that the sequence $(a_n)_{n \geq 1} = n!$ converges to $\infty$.
+\end{eg}
+\begin{proof}
+  Given some $r \in \R$, we want to find some $N \in \N$ such that $\forall n \geq N, a_n > r$.
+  \begin{align*}
+    a_n > r &\iff n! > r \\
+    &\iff n \cdot (n - 1) \cdot (n - 2) \cdot ... \cdot 1 > r
+  \end{align*}
+  Choose $N \in \N$ such that $N > r$. Then $\forall n \geq N, n > r$.
+  \begin{align*}
+    a_n &= n! \\
+    &= n \cdot (n - 1) \cdot (n - 2) \cdot ... \cdot 1 \\
+    &\geq n \cdot 1 \cdot 1 \cdot ... \cdot 1 \\
+    &= n \\
+    &> r 
+  \end{align*}
+  Since $r$ arbitrary, $\forall r \in \R, \exists N \in \N (\forall n \in \N (n \geq N \implies a_n > r))$. So $a_n$ converges to $\infty$.
+\end{proof}
+\begin{definition}
+  $(a_n)_{n \geq 1}$ converges to $-\infty$ if and only if
+  \[
+    \forall r \in \R, \exists N \in \N (\forall n \in \N (n \leq N \implies a_n < r))
+  \]
+\end{definition}
+Also note that $n$ is less than or equal to $N$, but not strictly less than $N$.
+\begin{eg}
+  Use a direct proof to show that the sequence $(a_n)_{n \geq 1} = \ln \frac{1}{n}$ converges to $-\infty$.
+\end{eg}
+\begin{proof}
+  Given some $r \in \R$, we want to find some $N \in \N$ such that $\forall n \geq N, a_n < r$.
+  \begin{align*}
+    a_n < r &\iff \ln \frac{1}{n} < r \\
+    &\iff \frac{1}{n} < e ^ r \\
+    &\iff n > e ^ {-r}
+  \end{align*}
+  Choose $N \in \N$ such that $N > e ^ {-r}$. Then $\forall n \geq N, n > e ^ {-r}$.
+  \begin{align*}
+    a_n &= \ln \frac{1}{n} \\
+    &< \ln \frac{1}{e ^ {-r}} \\
+    &= \ln e ^ r \\
+    &= r
+  \end{align*}
+  Since $r$ arbitrary, $\forall r \in \R, \exists N \in \N (\forall n \in \N (n \geq N \implies a_n < r))$.
+  So $a_n$ converges to $-\infty$.
+\end{proof}
+
+% --------------------------------------------------------------------------------------------------
+
+\subsection{Divergence}
+A sequence diverges if it does not converge to a limit $l \in \R$, does not converge to $\infty$, and does not converge to $-\infty$.
+\begin{eg}
+  Prove that the sequence $(a_n)_{n \geq 1} = (-1) ^ n$ diverges.
+\end{eg}
+\begin{proof}
+  We will prove that $a_n$ diverges by contradiction.
+
+  Assume $a_n$ converges to a limit $l \in \R$.
+  Then 
+  \[
+    \forall \epsilon > 0, \exists N \in \N (\forall n \in \N (n > N \implies \abs{a_n - l} < \epsilon))
+    \]
+  Suppose $\epsilon = 1$. Choose arbitrary $n > N$. Then $2n > N$ and $2n + 1 > N$.
+  \begin{align*}
+    \abs{a_{2n} - l} < \epsilon &\iff \abs{(-1) ^ {2n} - l} < 1 \\
+    &\iff \abs{1 - l} < 1 \\
+    &\iff -1 < 1 - l < 1 \\
+    &\iff -2 < -l < 0 \\
+    &\iff 0 < l < 2 \\
+    \abs{a_{2n + 1} - 1} < \epsilon &\iff \abs{(-1) ^ {2n + 1} - l} < 1 \\
+    &\iff \abs{-1 - l} < 1 \\
+    &\iff -1 < -1 - l < 1 \\
+    &\iff 0 < -l < 2 \\
+    &\iff -2 < l < 0
+  \end{align*}
+  Since no $l \in \R$ can satisfy both $0 < l < 2$ and $-2 < l < 0$, we have a contradiction.
+  So $a_n$ does not converge to a limit $l \in \R$.
+
+  Assume $a_n$ converges to $\infty$.
+  Then 
+  \[
+    \forall r \in \R, \exists N \in \N (\forall n \in \N (n \geq N \implies a_n > r))
+    \]
+  Suppose $r = 2$. Since $a_n = -1$ or $1$, and $-1 < 2$ and $1 < 2$, we have a contradiction.
+  So $a_n$ does not converge to $\infty$.
+
+  Assume $a_n$ converges to $-\infty$.
+  Then 
+  \[
+    \forall r \in \R, \exists N \in \N (\forall n \in \N (n \geq N \implies a_n < r))
+    \]
+  Suppose $r = -2$. Since $a_n = -1$ or $1$, and $-1 > -2$ and $1 > -2$, we have a contradiction.
+  So $a_n$ does not converge to $-\infty$.
+
+  Therefore, $a_n$ diverges.
+\end{proof}
+
+% ==================================================================================================
+
+\section{Sandwich theorem (squeeze theorem)}
+\begin{definition}
+  Suppose $(l_n)_{n \geq 1} \to l$ and $(u_n)_{n \geq 1} \to l$, where $l \in \R$.
+  \[
+    \exists N \in \N : \forall n \geq N, l_n \leq a_n \leq u_n \implies a_n \to l
+  \]
+\end{definition}
+Again, $n$ is greater than or equal to, but somehow not strictly greater than, $N$.
+\begin{proof}
+  Given some $\epsilon > 0$, since $l_n \to l$,
+  \[
+    \exists N_1 \in \N : \forall n > N_1, \abs{l_n - l} < \epsilon
+  \]
+  Also, since $u_n \to l$,
+  \[
+    \exists N_2 \in \N : \forall n > N_2, \abs{u_n - l} < \epsilon
+  \]
+  Let $N' = \max(N_1, N_2)$. Then $\forall n > N'$,
+  \begin{align*}
+    \abs{l_n - l} < \epsilon &\iff -\epsilon < l_n - l < \epsilon \\
+    &\iff l - \epsilon < l_n < l + \epsilon
+  \end{align*}
+  and similarly, $l - \epsilon < u_n < l + \epsilon$.
+
+  Assume that
+  \[
+    \exists N \in \N : \forall n \geq N, l_n \leq a_n \leq u_n
+  \]
+  Then $\forall n > \max(N, N')$,
+  \begin{align*}
+    l - \epsilon < l_n \leq a_n \leq u_n < l + \epsilon &\iff l - \epsilon < a_n < l + \epsilon \\
+    &\iff -\epsilon < a_n - l < \epsilon \\
+    &\iff \abs{a_n - l} < \epsilon
+  \end{align*}
+\end{proof}
+Note that it is possible to use a constant sequence for one of $l_n$ or $u_n$.
+\begin{eg}
+  (MMT 1 6(b)) Use the sandwich theorem to show that
+  \[
+    \lim_{n \to \infty} \frac{n!}{n ^ n} = 0
+  \]
+\end{eg}
+\begin{solution}
+  Let $a_n = \frac{n!}{n ^ n}$.
+  Let $l_n = 0$. Then $\lim_{n \to \infty} l_n = 0$.
+  \[
+    \forall n > 0, n! > 0 \text{ and } n ^ n > 0 \implies a_n > 0 \implies a_n > l_n
+  \]
+  Let $u_n = \frac{1}{n}$. Then $\lim_{n \to \infty} u_n = 0$. $\forall n > 0$,
+  \begin{align*}
+    a_n &= \frac{n!}{n ^ n} \\
+    &= \frac{n}{n} \cdot \frac{n - 1}{n} \cdot \frac{n - 2}{n} \cdot ... \cdot \frac{1}{n} \\
+    &= 1 \cdot (1 - \frac{1}{n}) \cdot (1 - \frac{2}{n}) \cdot ... \cdot \frac{1}{n}
+  \end{align*}
+  Since every term $\leq 1$, we have $a_n \leq \frac{1}{n} = u_n$.
+  So $\forall n > 0, l_n \leq a_n \leq u_n$.
+  Since $l_n \to 0$ and $u_n \to 0$ as $n \to \infty$, by sandwich theorem, $a_n \to 0$.
+\end{solution}
+
+% ==================================================================================================
+
+\section{Triangle inequality}
+\begin{lemma}
+  \[
+    \forall x, y > 0, \\
+    x \leq y \iff x ^ 2 \leq y ^ 2
+    \]
+\end{lemma}
+\begin{proof}
+  Assume $x \leq y$. Then
+  \begin{align*}
+    x \leq y \implies x ^ 2 &\leq y * x && \text{since $x > 0$} \\ 
+    &\leq y * y && \text{since $x \leq y$} \\ 
+    &= y ^ 2
+  \end{align*}
+  So $x \leq y \implies x ^ 2 \leq y ^ 2$.
+
+  Assume $x ^ 2 \leq y ^ 2$. Then
+  \begin{align*}
+    x ^ 2 \leq y ^ 2 &\implies x ^ 2 - y ^ 2 \leq 0 \\
+    &\implies (x - y)(x + y) \leq 0 \\ 
+    &\implies x - y \leq 0 && \text{since $x, y > 0 \implies x + y > 0$} \\
+    &\implies x \leq y
+  \end{align*}
+  So $x ^ 2 \leq y ^ 2 \implies x \leq y$.
+\end{proof}
+\begin{lemma}[Triangle inequality]
+  \[
+    \abs{a + b} \leq \abs{a} + \abs{b}
+  \]
+\end{lemma}
+\begin{proof}
+  \begin{align*}
+    \abs{a + b} ^ 2 &= (a + b) ^ 2 \\
+    &= a ^ 2 + 2ab + b ^ 2 \\
+    &\leq a ^ 2 + 2\abs{ab} + b ^ 2 \\
+    &= \abs{a} ^ 2 + 2\abs{ab} + \abs{b} ^ 2 \\
+    &= \abs{a} ^ 2 + 2\abs{a}\abs{b} + \abs{b} ^ 2 \\
+    &= (\abs{a} + \abs{b}) ^ 2
+  \end{align*}
+  From lemma, $\abs{a + b} \leq \abs{a} + \abs{b}$.
+\end{proof}
+Here is another proof of the triangle inequality:
+\begin{proof}
+  \begin{align*}
+    a + b \leq \abs{a} + b \leq \abs{a} + \abs{b} \\
+    - a - b \leq \abs{a} - b \leq \abs{a} + \abs{b} \implies a + b \leq -(\abs{a} + \abs{b})
+  \end{align*}
+  So we have
+  \[
+    -(\abs{a} + \abs{b}) \leq a + b \leq \abs{a} + \abs{b} \iff \abs{a + b} \leq \abs{a} + \abs{b}
+  \]
+\end{proof}
+
+% ==================================================================================================
+
+\section{Bounds}
+Suppose $X \subseteq \R$.
+\begin{itemize}
+  \item $u \in \R$ is an upper bound of $X$ if $x \leq u$ for all $x \in X$.
+  \item $s \in \R$ is the supremum (least upper bound) of $X$ if $s \leq u$ for all upper bounds $u$ of $X$.
+  \item $l \in \R$ is a lower bound of $X$ if $x \geq l$ for all $x \in X$.
+  \item $i \in \R$ is the infimum (greatest lower bound) of $X$ if all $i \geq l$ for all lower bounds $l$ of $X$.
+\end{itemize}
+
+To describe the bounded conditions of $X$, we have
+\begin{itemize}
+  \item $X$ is bounded above if $X$ has an upper bound.
+  \item $X$ is bounded below if $X$ has a lower bound.
+  \item $X$ is bounded if $X$ has an upper bound and a lower bound.
+\end{itemize}
+
+% ==================================================================================================
+
+\section{Cauchy sequences}
+\begin{definition}
+  A sequence $(a_n)_{n \geq 1}$ is a Cauchy sequence (in the real numbers) if and only if
+  \[
+    \forall \epsilon > 0, \exists N \in \N (\forall n, m \in \N (n > N \land m > N \implies \abs{a_n - a_m} < \epsilon))
+  \]
+\end{definition}
+The need to specify that the Cauchy sequence is in the real numbers will become apparent later.
+\begin{prop}
+  A sequence $(a_n)_{n \geq 1}$ converges to a limit $l \in \R$ (note $\R$) $\implies$ $a_n$ is a Cauchy sequence (in the real numbers).
+\end{prop}
+\begin{proof}
+  Since $a_n$ converges to $l$, 
+  \[
+    \forall \epsilon > 0, \exists N \in \N (\forall n \in \N (n > N \implies \abs{a_n - l} < \epsilon))
+  \]
+  Given some $\epsilon > 0$, 
+  \[
+    \exists N' \in \N (\forall n \in \N (n > N' \implies (\abs{a_n - l} < \frac{\epsilon}{2} < \epsilon)))
+  \]
+  Choose arbitrary $n, m > N'$. Then $\abs{a_n - l} < \frac{\epsilon}{2}$ and $\abs{a_m - l} < \frac{\epsilon}{2}$.
+  \begin{align*}
+    \abs{a_n - a_m} &= \abs{a_n - l - (a_m - l)} \\
+    &\leq \abs{a_n - l} + \abs{-(a_m - l)} && \text{by triangle inequality} \\
+    &= \abs{a_n - l} + \abs{a_m - l} \\
+    &< \frac{\epsilon}{2} + \frac{\epsilon}{2} \\
+    &= \epsilon
+  \end{align*}
+  Since $n, m, \epsilon$ arbitrary,
+  \[
+    \forall \epsilon > 0, \exists N' \in \N (\forall n, m \in \N (n > N' \land m > N' \implies \abs{a_n - a_m} < \epsilon))
+  \]
+  So $a_n$ is a Cauchy sequence.
+\end{proof}
+Using the contrapositive of this proposition, we present another explanation to why $(-1)^n$ does not converge to a limit $l \in \R$.
+\begin{explanation}
+  We want to show that $(-1)^n$ is not a Cauchy sequence.
+  Observe that
+  \[
+    \forall N \in \N, \exists n, m > N: \abs{a_n - a_m} = 2
+  \]
+  Pick some $0 < \epsilon < 2$. Then there does not exist $N \in \N$ such that $\forall n, m > N, \abs{a_n - a_m} < \epsilon$. So $(-1)^n$ is not a Cauchy sequence. By contrapositive, $(-1)^n$ does not converge to a limit $l \in \R$.
+\end{explanation}
+\begin{prop}
+  Let $(a_n)_{n \geq 1}$ be a Cauchy sequence. Then $a_n$ is bounded.
+\end{prop}
+\begin{proof}
+  By definition,
+  \[
+    \forall \epsilon > 0, \exists N \in \N \colon \forall n, m \in \N (n > N \land m > N \implies \abs{a_n - a_m} < \epsilon)
+  \]
+  Let
+  \[
+    M = \epsilon + \max{\abs{a_1}, \abs{a_2}, \abs{a_3}, ..., \abs{a_{N + 1}}}
+  \] 
+  Then $\forall n > N$,
+  \begin{align*}
+    \abs{a_n} &= \abs{a_n + a_{N + 1} - a_{N + 1}} \\
+    &\leq \abs{a_n - a_{N + 1}} + \abs{a_{N + 1}} && \text{by triangle inequality} \\ 
+    &< \epsilon + \abs{a_{N + 1}} \\
+    &\leq M
+  \end{align*}
+  So $M$ is an upper bound for $a_n$.
+\end{proof}
+
+% --------------------------------------------------------------------------------------------------
+
+\subsection{Subsequences}
+\begin{definition}
+  A subsequence is an infinite ordered subset of a sequence.
+\end{definition}
+Note that a subsequence, by default, has infinitely many terms. Since it is defined to be a subset of a sequence, the sequence from which the subsequence is taken from must also have infinitely many terms. 
+\begin{notation}
+  We denote a subsequence of a sequence $(a_n)_{n \geq 1}$ as $(a_{n_i})_{i \geq 1}$, where $n_i$ is a strictly increasing sequence in $\N^+$.
+\end{notation}
+\begin{prop}
+  For any subsequence $(a_{n_i})_{i \geq 1}$, $n_i \geq i$.
+\end{prop}
+\begin{explanation}
+A sequence is a subsequence of itself, so in this case we have $n_i = i$ since we are not omitting any terms to form the subsequence (which is the sequence itself). For any other subsequence, suppose the first omitted term is $a_k$. Then 
+\[
+  \begin{cases}
+    n_i = i & i < k \\ 
+    n_i > i & i \geq k
+  \end{cases}
+\]  
+so in general, for any subsequence, we have $n_i \geq i$.
+\end{explanation}
+\begin{theorem}
+  Let $a_n$ be a sequence and $a_{n_i}$ be a subsequence of $a_n$. If $a_n$ converges to limit $l \in \R$, then $a_{n_i}$ also converges to $l$.
+\end{theorem}
+\begin{proof}
+  Since $a_n$ converges to $l$, given some $\epsilon > 0$, 
+  \[
+    \exists N \in \N: \forall i > N, \abs{a_i - l} < \epsilon
+  \]
+  Since $n_i \geq i$, $i > N$ implies $n_i > N$, so
+  \[
+    \forall i > N, \abs{a_{n_i} - l} < \epsilon
+  \]
+\end{proof}
+\begin{theorem}
+  Every subsequence of real numbers has a monotonic subsequence.
+\end{theorem}
+\begin{proof}
+  Let $a_n$ be a peak if
+  \begin{align*}
+    a_n > a_m && \forall m > n
+  \end{align*}
+  If the sequence has infinitely many peaks at $n_1 < n_2 < n_3 < ...$, then $a_{n_1} > a_{n_2} > a_{n_3} > ...$ is a strictly decreasing subsequence.
+  
+  Otherwise, the sequence has only finitely many peaks at $n_1 < n_2 < ... < n_k$, or no peaks. Consider $a_{n_k + 1}$. Since $a_{n_{k + 1}}$ is not a peak,
+  \[
+    \exists i > k + 1: a_{n_i} \geq a_{n_k + 1}
+  \]
+  and since $a_{n_i}$ is not a peak, we can construct a (not strictly) increasing subsequence in this way.
+\end{proof}
+
+% --------------------------------------------------------------------------------------------------
+
+\subsection{Completeness}
+We define two notions of completeness:
+\begin{definition}
+  A metric space $(X, d)$ is Cauchy complete if and only if all Cauchy sequences in $(X, d)$ converges to an element in $X$.
+\end{definition}
+\begin{eg}
+  The set of rational numbers $\Q$ is not Cauchy complete. 
+  
+  Consider the sequence
+  \[
+    a_1 = 1, a_{n + 1} = \frac{x_n + \frac{2}{x_n}}{2}
+  \]
+  Every term in the sequence is in $\Q$, but the sequence converges to $\sqrt{2}$, which is not in $\Q$.
+
+  Consider another sequence in the rationals
+  \[
+    a_1 = 3.1, a_2 = 3.14, a_3 = 3.142, a_4 = 3.1416, ...
+  \]
+  where $a_n$ represents the $n$th decimal approximation of $\pi$. The sequence converges to $\pi \notin \Q$.
+\end{eg}
+\begin{definition}[Axiom of Dedekind completeness]
+  A partially ordered set $X$ is Dedekind complete if and only if it has the least-upper-bound property, i.e. every non-empty subset of $X$ with an upper bound has a least upper bound (i.e. supremum).
+\end{definition}
+\begin{theorem}[Fundamental theorem of analysis]
+  Every increasing sequence of real numbers $a_n$ with an upper bound:
+  \begin{itemize}
+    \item has a supremum $s$, and
+    \item converges to $s$.
+  \end{itemize}
+\end{theorem}
+\begin{proof}
+  A non-empty subset of the partially ordered set $\R$ is equivalent to an increasing sequence of real numbers. So, the axiom of Dedekind completeness tells us that every increasing sequence of real numbers with an upper bound has a supremum.
+
+  We prove the second point in two stages. 
+
+  In the first stage, we claim that
+  \[
+    \exists N \in \N (\abs{a_N - s} < \epsilon)
+  \]
+  We prove this by contradiction. Suppose $\forall n \in \N, \abs{a_n - s} \geq \epsilon$. Since $s$ is the supremum, we have $s \geq a_n \forall n \in \N$, so $s - a_n \geq \epsilon \forall n \in \N$. Rearranging the inequality gives
+  \begin{align*}
+    a_n \leq s - \epsilon && \forall n \in \N
+  \end{align*}
+  By definition, $s - \epsilon$ is an upper bound. However, since $\epsilon > 0$, $s - \epsilon < s$, which contradicts the fact that $s$ is the supremum, i.e. least upper bound. So the claim is true.
+
+  In the second stage, we claim that
+  \[
+    \forall n \in \N (n > N \implies \abs{a_n - s} < \epsilon)
+  \]
+  where $N$ satisfies the criterion in our first claim. Since $a_n$ increasing, $n > N \implies a_n \geq a_N$. So
+  \begin{align*}
+    s - a_n &\leq s - a_N \\
+    &< \epsilon && \text{from above}
+  \end{align*}
+  Since $s - a_n \geq 0$, we have $\abs{a_n - s} < \epsilon$.
+\end{proof}
