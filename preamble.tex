@@ -6,7 +6,7 @@
 \usepackage{graphicx}
 \usepackage{float}
 \usepackage{booktabs}
-\usepackage{enumitem}
+\usepackage[shortlabels]{enumitem}
 
 \pdfminorversion=7
 
@@ -26,11 +26,16 @@
 
 % Math stuff
 \usepackage{amsmath, amsfonts, mathtools, amsthm, amssymb}
+\usepackage{centernot} % For the "does not tend to" symbol
+\newcommand{\nto}{\centernot\rightarrow}
 % Fancy script capitals
 \usepackage{mathrsfs}
 \usepackage{cancel}
 % Bold math
 \usepackage{bm}
+% References
+\usepackage{hyperref}
+\usepackage{cleveref}
 % Some shortcuts
 \newcommand\N{\ensuremath{\mathbb{N}}}
 \newcommand\R{\ensuremath{\mathbb{R}}}
@@ -59,6 +64,9 @@
 
 % Easily typeset systems of equations (French package)
 \usepackage{systeme}
+
+% Tagging only one equation (or not all equations) in align*
+\newcommand\numberthis{\addtocounter{equation}{1}\tag{\theequation}}
 
 % Put x \to \infty below \lim
 \let\svlim\lim\def\lim{\svlim\limits}
