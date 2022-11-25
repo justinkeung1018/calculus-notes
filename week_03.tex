@@ -607,7 +607,7 @@ This characterisation is particularly useful when we want to show that some func
   \[
     f(x_{n_i}) - f(y_{n_i}) \to f(x_0) - f(x_0) = 0
   \]
-  However, this contradicts the initial assumption that $f(x_{n_i}) - f(y_{n_i}) \nto 0$.
+  However, from our initial assumption, $f(x_n) - f(y_n) \geq \epsilon > 0 \ \forall n \geq 1$, so $f(x_n) - f(y_n) \nto 0$. We have reached a contradiction, so $f$ must be uniformly continuous.
 \end{proof}
 Observe that in the theorem we have just proved, $f$ is continuous on a \textit{closed} interval $[a, b]$.
 \begin{itemize}
@@ -640,7 +640,7 @@ Observe that in the theorem we have just proved, $f$ is continuous on a \textit{
     \end{enumerate}
 \end{enumerate}
 
-\begin{proof}
+\begin{proof}[2a]
   We want to show that
   \[
     \exists \epsilon > 0: \forall \delta > 0, \; \exists x, y \in (0, 1]: \abs{x - y} < \delta \land \abs{f(x) - f(y)} < \epsilon
