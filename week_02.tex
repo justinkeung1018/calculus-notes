@@ -342,35 +342,28 @@ To describe the bounded conditions of $X$, we have
 \begin{definition}
   A sequence $(a_n)_{n \geq 1}$ is a Cauchy sequence (in the real numbers) if and only if
   \[
-    \forall \epsilon > 0, \exists N \in \N (\forall n, m \in \N (n > N \land m > N \implies \abs{a_n - a_m} < \epsilon))
+    \forall \epsilon > 0, \; \exists N \in \N: \forall n, m \in \N, \; n, m > N \implies \abs{a_n - a_m} < \epsilon
   \]
 \end{definition}
-The need to specify that the Cauchy sequence is in the real numbers will become apparent later.
+We will use \textit{convergent} to mean "converging to some limit $l \in \R$".
 \begin{prop}
-  A sequence $(a_n)_{n \geq 1}$ converges to a limit $l \in \R$ (note $\R$) $\implies$ $a_n$ is a Cauchy sequence (in the real numbers).
+  \label{prop:convergent-cauchy}
+  All convergent sequences are Cauchy.
 \end{prop}
 \begin{proof}
-  Since $a_n$ converges to $l$, 
+  Suppose the sequence $a_n$ converges to $l \in \R$. Then 
   \[
-    \forall \epsilon > 0, \exists N \in \N (\forall n \in \N (n > N \implies \abs{a_n - l} < \epsilon))
+    \forall \epsilon > 0, \; \exists N \in \N: \forall n \in \N, \; n > N \implies \abs{a_n - l} < \frac{\epsilon}{2}
   \]
-  Given some $\epsilon > 0$, 
-  \[
-    \exists N' \in \N (\forall n \in \N (n > N' \implies (\abs{a_n - l} < \frac{\epsilon}{2} < \epsilon)))
-  \]
-  Choose arbitrary $n, m > N'$. Then $\abs{a_n - l} < \frac{\epsilon}{2}$ and $\abs{a_m - l} < \frac{\epsilon}{2}$.
+  Take arbitrary $\epsilon > 0$. Let $N$ satisfy the above for this $\epsilon$. Take arbitrary $n, m > N$. Then $\abs{a_n - l} < \frac{\epsilon}{2}$ and $\abs{a_m - l} < \frac{\epsilon}{2}$.
   \begin{align*}
     \abs{a_n - a_m} &= \abs{a_n - l - (a_m - l)} \\
-    &\leq \abs{a_n - l} + \abs{-(a_m - l)} && \text{by triangle inequality} \\
+    &\leq \abs{a_n - l} + \abs{-(a_m - l)} \ \text{by triangle inequality} \\
     &= \abs{a_n - l} + \abs{a_m - l} \\
     &< \frac{\epsilon}{2} + \frac{\epsilon}{2} \\
     &= \epsilon
   \end{align*}
-  Since $n, m, \epsilon$ arbitrary,
-  \[
-    \forall \epsilon > 0, \exists N' \in \N (\forall n, m \in \N (n > N' \land m > N' \implies \abs{a_n - a_m} < \epsilon))
-  \]
-  So $a_n$ is a Cauchy sequence.
+  Since $n, m, \epsilon$ arbitrary, $a_n$ is a Cauchy sequence.
 \end{proof}
 Using the contrapositive of this proposition, we present another explanation to why $(-1)^n$ does not converge to a limit $l \in \R$.
 \begin{explanation}
@@ -382,25 +375,65 @@ Using the contrapositive of this proposition, we present another explanation to 
   Pick some $0 < \epsilon < 2$. Then there does not exist $N \in \N$ such that $\forall n, m > N, \abs{a_n - a_m} < \epsilon$. So $(-1)^n$ is not a Cauchy sequence. By contrapositive, $(-1)^n$ does not converge to a limit $l \in \R$.
 \end{explanation}
 \begin{prop}
-  Let $(a_n)_{n \geq 1}$ be a Cauchy sequence. Then $a_n$ is bounded.
+  \label{prop:cauchy-bounded}
+  All Cauchy sequences are bounded.
 \end{prop}
 \begin{proof}
-  By definition,
+  We want to show that
   \[
-    \forall \epsilon > 0, \exists N \in \N \colon \forall n, m \in \N (n > N \land m > N \implies \abs{a_n - a_m} < \epsilon)
+    \exists M \in \R: \abs{a_n} \leq M \ \forall n \in \N
+  \]
+  \begin{remark}
+    We are taking the absolute value of $a_n$ purely for convenience; equally, we could have found separate upper and lower bounds, instead of just one $M$, but $\abs{x_n} < M$ encapsulates both bounds perfectly fine. We simply take the magnitude of the bound which has the larger magnitude, then the interval $[-M, M]$ covers both bounds (picture the number line), regardless if they are positive or negative.
+  \end{remark}
+  Since $a_n$ is a Cauchy sequence, we have
+  \[
+    \forall \epsilon > 0, \; \exists N \in \N: \forall n, m \in \N, \; n, m > N \implies \abs{a_n - a_m} < \epsilon
+  \]
+  Let $\epsilon = 1$. Then substituting into the definition above,
+  \[
+    \exists N \in \N: \forall n, m \in \N, \; n, m > N \implies \abs{a_n - a_m} < 1
   \]
   Let
   \[
-    M = \epsilon + \max{\abs{a_1}, \abs{a_2}, \abs{a_3}, ..., \abs{a_{N + 1}}}
+    M = 1 + \max\{\abs{a_1}, \abs{a_2}, \abs{a_3}, ..., \abs{a_{N + 1}}\}
   \] 
+  \begin{remark}
+    Instead of setting $M = \epsilon + ...$, we choose the specific case when $\epsilon = 1$ (or any other value) so that $M$ would not depend on $\epsilon$, which we would want to be arbitrarily small. Note that we are using the $N$ when $\epsilon = 1$, but not any $N$ that satisfies any arbitrary $\epsilon$, so none of the proof depends on the value of $\epsilon$. We can choose any $\epsilon$ and any corresponding $N$, but once we have chosen a value, we fix it regardless of the value of $\epsilon$. This justifies the step of substituting $\abs{a_n - a_{N + 1}} < 1$ in the next part.
+  \end{remark}
   Then $\forall n > N$,
   \begin{align*}
     \abs{a_n} &= \abs{a_n + a_{N + 1} - a_{N + 1}} \\
-    &\leq \abs{a_n - a_{N + 1}} + \abs{a_{N + 1}} && \text{by triangle inequality} \\ 
-    &< \epsilon + \abs{a_{N + 1}} \\
+    &\leq \abs{a_n - a_{N + 1}} + \abs{a_{N + 1}} \ \text{by triangle inequality} \\ 
+    &< 1 + \abs{a_{N + 1}}\\
     &\leq M
   \end{align*}
+  \begin{remark}
+    We include $a_{N + 1}$ when defining $M$ because otherwise, we wouldn't know what $\abs{a_n - a_N}$ evaluates to, since the definition for Cauchy only applies for $n > N$ but not $n = N$. $\abs{a_n - a_N}$ isn't directly related to $M$, but we want to be able to do the trick of subtracting and adding the same thing, which is $a_{N + 1}$ in this case.
+  \end{remark}
   So $M$ is an upper bound for $a_n$.
+\end{proof}
+Although we can combine \Cref{prop:convergent-cauchy} and \Cref{prop:cauchy-bounded} to prove the following proposition transitively, we can do so directly in a fairly straightforward manner:
+\begin{prop}
+  \label{prop:convergent-bounded}
+  All convergent sequences are bounded.
+\end{prop}
+\begin{proof}
+  Suppose the sequence $a_n$ converges to some limit $l \in \R$. Then
+  \[
+    \forall \epsilon > 0, \; \exists N \in \N: \forall n \in \N, \; n > N \implies \abs{a_n - l} < \epsilon
+  \]
+  Let $\epsilon = 1$ and let $N$ satisfy the above definition when $\epsilon = 1$. Then for all $n > N$, we have
+  \begin{align*}
+    \abs{a_n} - \abs{l} &\leq \abs{a_n - l} \ \text{by reverse triangle inequality} \\ 
+    &< 1 \\
+    \iff \abs{a_n} &< \abs{l} + 1
+  \end{align*}
+  Let
+  \[
+    M = \max\{\abs{l} + 1, \abs{a_1}, \abs{a_2}, ..., \abs{a_N}\}
+  \]
+  Then $\forall n > N$, $\abs{a_n} < \abs{l} + 1 \leq M$. Otherwise, $\abs{a_1}, \abs{a_2}, ..., \abs{a_N} \leq M$ by construction of $M$. So $\abs{a_n} \leq M \ \forall n \in \N$.
 \end{proof}
 
 % --------------------------------------------------------------------------------------------------
