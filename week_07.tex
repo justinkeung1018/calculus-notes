@@ -1,0 +1,683 @@
+\chapter{Power series}
+
+% ==================================================================================================
+
+\section{What is a power series?}
+Power series is, in some sense, a generalisation of the geometric series
+\[
+  \sumto{n}{\infty} x ^ n
+\]
+by introducing additional parameters that allow us to control the behaviour of the series. A power series is in the form of 
+\[
+  \sumto[0]{n}{\infty} a_n (x - c) ^ n
+\]
+where the two extra parameters are
+\begin{itemize}
+  \item $a_n$, a variable weight on each power of $x$
+  \item $c$, a constant by which we shift the series
+\end{itemize}
+
+% --------------------------------------------------------------------------------------------------
+
+\subsection{What do we want to know about power series?}
+For the geometric series
+\[
+  \sumto{n}{\infty} x ^ n
+\]
+we note that it converges if and only if $\abs{x} < 1$. For which values of $x$ does a given power series converge?
+
+When $\abs{x} < 1$, the geometric series above converges to the function
+\[
+  f(x) = \frac{1}{1 - x}
+\]
+i.e. the function can be "represented" by the geometric series. What are the necessary and sufficient conditions for a power series to represent a function $f: (a, b) \to \R$? In other words, what are the necessary and sufficient conditions for a power series to converge to that function on the interval $(a, b)$?
+
+% --------------------------------------------------------------------------------------------------
+
+\subsection{Polynomials}
+In general, we can express a polynomial of degree $n$ as
+\[
+  p(x) = a_0 + a_1 \cdot x + \cdots + a_n \cdot x ^ n
+\]
+where $a_n \neq 0$. We can define a power series where $c = 0$ and $a_m = 0 \ \forall m > n$, and we match the rest of the coefficients. Since $n$ is finite, $p(x)$ is finite as well, so the power series converges. Clearly, the power series converges to $p(x) \ \forall x \in \R$.
+
+% ==================================================================================================
+
+\section{Radius of convergence}
+First, we prove that every power series has a radius of convergence.
+\begin{theorem}
+  \label{thm:roc-existence}
+  Let
+  \[
+    \sumto[0]{n}{\infty} a_n (x - c) ^ n
+  \]
+  be a power series. There exists $0 \leq R \leq \infty$ such that the series converges absolutely for $0 \leq \abs{x - c} < R$ and diverges for $\abs{x - c} > R$.
+\end{theorem}
+\begin{proof}
+  WLOG, assume $c = 0$. We can directly replace $x$ by $x - c$ in the following steps, so this assumption is just to save some typing (or writing).
+
+  Trivially, when $\abs{x} = 0$, each term of the power series is equal to 0, so the whole power series converges to 0. 
+
+  Otherwise, suppose the power series converges for some $x_0 > 0$. Then the corresponding sequence $a_n x_0 ^ n$ must also converge (to 0), and by \Cref{prop:convergent-bounded}, it must be bounded. Then there exists $M$ such that
+  \[
+    \abs{a_n x_0 ^ n} \leq M \quad \forall n \in \N
+  \]
+  Take arbitrary $x$ such that $0 < \abs{x} < \abs{x_0}$. Let
+  \[
+    r = \abs{\frac{x}{x_0}}
+  \]
+  Clearly $0 < r < 1$. Then
+  \begin{align*}
+    \abs{a_n x ^ n} &= \abs{a_n x_0 ^ n} \, r ^ n \\ 
+    &\leq M r ^ n
+  \end{align*}
+  Since $\abs{r} < 1$, the series $\sumto[0]{n}{\infty} M r ^ n$ converges. By direct comparison, the series
+  \[
+    \sumto[0]{n}{\infty} a_n x ^ n
+  \]
+  converges absolutely. Since $x$ was arbitrary, the series converges for all $x$ with $\abs{x} < \abs{x_0}$.
+
+  Now we define
+  \[
+    R = \sup\left\{\abs{x}: \sumto[0]{n}{\infty} a_n x ^ n \ \text{converges}\right\}
+  \]
+  Clearly 0 must be in the set, so $R \geq 0$.
+  \begin{itemize}
+    \item If $R = 0$, then the power series converges only for $x = 0$. Looking back at what we're trying to prove about $R$, we only care about what diverges but not what converges, because no $x$ satisfies $0 \leq \abs{x} < 0$. Anyway, since the power series only converges for $x = 0$, it diverges for all x with $\abs{x} > 0$.
+    \item If $R > 0$, then the power series converges absolutely for all $x$ such that $\abs{x} < R$, since by definition of supremum, the power series must converge for some $x_0$ such that $\abs{x} < \abs{x_0} < R$ (if such $x_0$ doesn't exist, then there must exist an upper bound smaller than R). By construction of $R$, we also know that the power series must diverge for all $x$ such that $\abs{x} > R$. 
+    \item If $R = \infty$, then the power series converges for all $x$.
+  \end{itemize}
+\end{proof}
+Now we are ready to state the definition of the radius of convergence.
+\begin{definition}
+  If the power series
+  \[
+    \sumto[0]{n}{\infty} a_n (x - c) ^ n
+  \]
+  converges for $\abs{x - c} < R$ and diverges for $\abs{x - c} > R$, then $0 \leq R \leq \infty$ is called the radius of convergence of the power series.
+\end{definition}
+\begin{remark}
+  The definition says nothing about what happens when $\abs{x - c} = R$. In fact, the power series may either converge absolutely, converge, or diverge at the boundaries.
+\end{remark}
+There are two main ways of finding the radius of convergence.
+\begin{theorem}
+  \label{thm:roc}
+  The radius of convergence $R$ of a power series
+  \[
+    \sumto[0]{n}{\infty} a_n (x - c) ^ n
+  \]
+  is given by
+  \[
+    R = \lim_{n \to \infty} \abs{\frac{a_n}{a_{n + 1}}} \qquad \text{or} \qquad \frac{1}{R} = \lim_{n \to \infty} \abs{\frac{a_{n + 1}}{a_n}}
+  \]
+\end{theorem}
+\begin{proof}
+  Let
+  \[
+    R = \lim_{n \to \infty} \abs{\frac{a_n}{a_{n + 1}}}
+  \]
+  (We don't know if $R$ is the radius of convergence yet.) We want to apply d'Alembert's ratio test here, so we evaluate:
+  \begin{align*}
+    \lim_{n \to \infty} \abs{\frac{a_{n + 1} (x - c) ^ {n + 1}}{a_n (x - c) ^ n}} &= \abs{x - c} \lim_{n \to \infty} \abs{\frac{a_{n + 1}}{a_n}} \\
+    &= \frac{\abs{x - c}}{R}
+  \end{align*}
+  We know that the power series converges if 
+  \[
+    \frac{\abs{x - c}}{R} < 1 \iff \abs{x - c} < R
+  \]
+  and diverges if
+  \[
+    \frac{\abs{x - c}}{R} > 1 \iff \abs{x - c} > R
+  \]
+  so $R$ is the radius of convergence of the power series.
+\end{proof}
+\begin{theorem}[Cauchy-Hadamard theorem]
+  \label{thm:cauchy-hadamard}
+  The radius of convergence $R$ of a power series
+  \[
+    \sumto[0]{n}{\infty} a_n (x - c) ^ n
+  \]
+  is given by
+  \[
+    R = \frac{1}{\limsup_{n \to \infty} \abs{a_n} ^ \frac{1}{n}}
+  \]
+\end{theorem}
+\begin{proof}
+  Let
+  \[
+    R = \frac{1}{\limsup_{n \to \infty} \abs{a_n} ^ \frac{1}{n}}
+  \]
+  (We don't know if $R$ is the radius of convergence yet.) We want to apply the $n^\text{th}$ root test to the series:
+  \begin{align*}
+    \limsup_{n \to \infty} \, \abs{a_n (x - c) ^ n} ^ \frac{1}{n} &= \abs{x - c} \limsup_{n \to \infty} \, \abs{a_n} ^ \frac{1}{n} \\ 
+    &= \frac{\abs{x - c}}{R} 
+  \end{align*}
+  We know that the power series converges if 
+  \[
+    \frac{\abs{x - c}}{R} < 1 \iff \abs{x - c} < R
+  \]
+  and diverges if
+  \[
+    \frac{\abs{x - c}}{R} > 1 \iff \abs{x - c} > R
+  \]
+  so $R$ is the radius of convergence of the power series.
+\end{proof}
+We will go through a few examples to see how we could find the radius of convergence using the above theorems, and why they are probably not the safest way if you don't know what you're doing.
+\begin{eg}
+  Determine the radius and interval of convergence of the power series
+  \[
+    \frac{n}{4 ^ n} (x + 3) ^ n
+  \]
+\end{eg}
+\begin{solution}
+  \begin{align*}
+    R &= \lim_{n \to \infty} \abs{\frac{a_n}{a_{n + 1}}} \\
+    &= \lim_{n \to \infty} \abs{\frac{n}{4 ^ n} \cdot \frac{4 ^ {n + 1}}{n + 1}} \\
+    &= \lim_{n \to \infty} \abs{\frac{n}{n + 1} \cdot 4} \\ 
+    &= 4
+  \end{align*}
+  so the radius of convergence is 4. The series converges if 
+  \[
+    \abs{x + 3} < 4 \iff -7 < x < 1
+  \]
+  When $x = -7$, the series becomes
+  \[
+    \sumto[0]{n}{\infty} \frac{n}{4 ^ n} (-4) ^ n = \sumto[0]{n}{\infty} n (-1) ^ n
+  \]
+  which diverges by the alternating series test.
+
+  When $x = 1$, the series becomes
+  \[
+    \sumto[0]{n}{\infty} \frac{n}{4 ^ n} \cdot 4 ^ n = \sumto[0]{n}{\infty} n
+  \]
+  which diverges by the divergence test since the terms do not tend to 0.
+
+  Therefore, the interval of convergence is $(-7, 1)$.
+\end{solution}
+\begin{eg}
+  Determine the radius and interval of convergence of the power series
+  \[
+    \frac{4 ^ n}{n} (x + 3) ^ n
+  \]
+\end{eg}
+\begin{solution}
+  \begin{align*}
+    R &= \lim_{n \to \infty} \abs{\frac{a_n}{a_{n + 1}}} \\
+    &= \lim_{n \to \infty} \abs{\frac{4 ^ n}{n} \cdot \frac{n + 1}{4 ^ {n + 1}}} \\
+    &= \lim_{n \to \infty} \abs{\frac{n + 1}{n} \cdot \frac{1}{4}} \\ 
+    &= \frac{1}{4}
+  \end{align*}
+  so the radius of convergence is $\frac{1}{4}$. The series converges if 
+  \[
+    \abs{x + 3} < \frac{1}{4} \iff -\frac{13}{4} < x < -\frac{11}{4}
+  \]
+  When $x = -\frac{13}{4}$, the series becomes
+  \[
+    \sumto[0]{n}{\infty} \frac{4 ^ n}{n} \left(-\frac{1}{4}\right) ^ n = \sumto[0]{n}{\infty} \frac{(-1) ^ n}{n}
+  \]
+  which converges by the alternating series test (this is known as the alternating harmonic series).
+
+  When $x = -\frac{11}{4}$, the series becomes
+  \[
+    \sumto[0]{n}{\infty} \frac{4 ^ n}{n} \left(\frac{1}{4}\right) ^ n = \sumto[0]{n}{\infty} \frac{1}{n}
+  \]
+  which is the harmonic series, so it diverges (e.g. by the integral test).
+
+  Therefore, the interval of convergence is $\displaystyle\left[-\frac{13}{4}, -\frac{11}{4}\right)$.
+\end{solution}
+\begin{eg}
+  Determine the radius and interval of convergence of the power series
+  \[
+    \sumto[0]{n}{\infty} n! \, x ^ n
+  \]
+\end{eg}
+\begin{solution}
+  \begin{align*}
+    R &= \lim_{n \to \infty} \abs{\frac{a_n}{a_{n + 1}}} \\
+    &= \lim_{n \to \infty} \abs{\frac{n!}{(n + 1)!}} \\
+    &= \lim_{n \to \infty} \abs{\frac{1}{n + 1}} \\ 
+    &= 0
+  \end{align*}
+  so the radius of convergence is 0. Then we know that the power series only converges for $x = 0$, so the interval of convergence is $\{0\}$.
+  \begin{remark}
+    Intervals are sets.
+  \end{remark}
+\end{solution}
+The last statement doesn't sound too rigorous, does it? How do we suddenly \textit{know} that the series will converge for $x = 0$? Even though we can still plug the terms into the formulae and get them to work, there are better and more robust ways of finding the radius and interval of convergence. We will attempt this example using another approach.
+\begin{solution}
+  \begin{align*}
+    \lim_{n \to \infty} \abs{\frac{a_{n + 1}}{a_n}} &= \lim_{n \to \infty} \abs{\frac{(n + 1)! \, x ^ {n + 1}}{n! \, x ^ n}} \\ 
+    &= \abs{x} \lim_{n \to \infty} n
+  \end{align*}
+  The power series converges for $x = 0$, and the limit $\to \infty$ for $x \neq 0$. Therefore, the radius of convergence is 0, and the interval of convergence is $\{0\}$.
+\end{solution}
+Note that $a_n$ refers to the whole term of the series here, while in \Cref{thm:roc} and \Cref{thm:cauchy-hadamard}, $a_n$ refers to only the coefficient in front of each term.
+\begin{eg}
+  Determine the radius and interval of convergence of the power series
+  \[
+    \sumto[0]{n}{\infty} (2x) ^ {2n}
+  \]
+\end{eg}
+If we try to find the radius of convergence using \Cref{thm:roc} then we get
+\begin{align*}
+  R &= \lim_{n \to \infty} \abs{\frac{a_n}{a_{n + 1}}} \\ 
+  &= \lim_{n \to \infty} \abs{\frac{2 ^ {2n}}{2 ^ {2n + 2}}} \\
+  &= \frac{1}{4}
+\end{align*}
+which is wrong, as we will see later. Recall how we stated \Cref{thm:roc}: notice that we are finding the ratio of successive terms $a_n$ and $a_{n + 1}$, which correspond to the coefficients of $x ^ n$ and $x ^ {n + 1}$. However, for this power series, $a_n = 0$ for all odd $n$. How do we define the ratio then? That's why the approach above is more robust:
+\begin{solution}
+  \begin{align*}
+    \lim_{n \to \infty} \abs{\frac{a_{n + 1}}{a_n}} &= \lim_{n \to \infty} \abs{\frac{(2x) ^ {2n + 2}}{(2x) ^ {2n}}} \\ 
+    &= \abs{(2x) ^ 2} \\ 
+    &= 4x ^ 2
+  \end{align*}
+  The power series converges if
+  \[
+    4x ^ 2 < 1 \iff x ^ 2 < \frac{1}{4} \iff \abs{x} < \frac{1}{2}
+  \]
+  so the radius of convergence is $\frac{1}{2}$. 
+  
+  When $x = -\frac{1}{2}$, the series becomes
+  \[
+    \sumto[0]{n}{\infty} (-1) ^ {2n} = \sumto[0]{n}{\infty} 1
+  \]
+  which clearly diverges.
+
+  When $x = \frac{1}{2}$, the series becomes
+  \[
+    \sumto[0]{n}{\infty} 1 ^ {2n} = \sumto[0]{n}{\infty} 1
+  \]
+  which also diverges.
+
+  Therefore, the interval of convergence is $\displaystyle\left(-\frac{1}{2}, \frac{1}{2}\right)$.
+\end{solution}
+\begin{eg}
+  Determine the radius and interval of convergence of
+  \[
+    \sumto[0]{n}{\infty} (-1) ^ n \frac{x ^ {2n + 1}}{(2n + 1)!}
+  \]
+\end{eg}
+\begin{solution}
+  \begin{align*}
+    \lim_{n \to \infty} \abs{\frac{a_{n + 1}}{a_n}} &= \lim_{n \to \infty} \abs{\frac{(-1) ^ {n + 1} \, x ^ {2n + 3}}{(2n + 3)!} \cdot \frac{(2n + 1)!}{(-1) ^ n \, x ^ {2n + 1}}} \\ 
+    &= x ^ 2 \lim_{n \to \infty} \abs{\frac{1}{(2n + 3)(2n + 2)}} \\ 
+    &= 0 \\
+    &< 1
+  \end{align*}
+  so the power series converges for all $x \in \R$. Therefore, the radius of convergence is $\infty$ and the interval of convergence is $\R$.
+\end{solution}
+
+% --------------------------------------------------------------------------------------------------
+
+\subsection{Differentiation}
+\begin{theorem}
+  Suppose the power series
+  \[
+    \sumto[0]{n}{\infty} a_n (x - c) ^ n
+  \]
+  has radius of convergence $R$. Then the power series
+  \[
+    \sumto[0]{n}{\infty} n a_n (x - c) ^ {n - 1}
+  \]
+  also has radius of convergence $R$.
+\end{theorem}
+\begin{proof}
+  WLOG, assume $c = 0$ and suppose $\abs{x} < R$. Take arbitrary $\rho$ such that $\abs{x} < \rho < R$. Let
+  \[
+    r = \frac{\abs{x}}{\rho}
+  \]
+  then we have $0 < r < 1$ for $\abs{x} \neq 0$. (Trivially, the power series must converge for $\abs{x} = 0$.) 
+  \begin{intuition}
+    We took some arbitrary $\rho < R$ so we know that the power series $\sum \abs{a_n \rho ^ n}$ converges. Ultimately, we want to show that the differentiated power series must converge for all $\abs{x} < \rho$. So we artifically introduce $\abs{a_n \rho ^ n}$, and find some way to show that the rest of the expression also converges, then the whole series converges.
+  \end{intuition}
+  We rewrite \textit{the absolute value of} each term in the differentiated power series such that we can extract information from the original power series. We take the absolute value of each term so we get $\abs{x}$ somewhere, which allows us to substitute in $r$.
+  \begin{align*}
+    \abs{n a_n x ^ {n - 1}} &= \abs{\frac{n a_n \rho ^ n x ^ {n - 1}}{\rho ^ n}} \\
+    &= \frac{n}{\rho} \cdot \left(\frac{\abs{x}}{\rho}\right) ^ {n - 1} \cdot \abs{a_n \rho ^ n} \\ 
+    &= \frac{n r ^ {n - 1}}{\rho} \abs{a_n \rho ^ n} \numberthis \label{eqn:diff-power-series}
+  \end{align*}
+  The series $\sum n r ^ {n - 1}$ converges by the ratio test:
+  \[
+    \lim_{n \to \infty} \frac{(n + 1) r ^ n}{n r ^ {n - 1}} = r \lim_{n \to \infty} \frac{n + 1}{n} = r < 1
+  \]
+  and so it is bounded. Then there exists $M \in \R$ such that for all $n \in \N$,
+  \[
+    \abs{n r ^ {n - 1}} \leq M
+  \]
+  Substituting back into \Cref{eqn:diff-power-series}, we get
+  \[
+    \frac{n r ^ {n - 1}}{\rho} \abs{a_n \rho ^ n} \leq \frac{M}{\rho} \abs{a_n \rho ^ n}
+  \]
+  Since $\rho < R$, we know that the power series $\sum \abs{a_n \rho ^ n}$ converges (from \Cref{thm:roc-existence}), so 
+  \[
+    \frac{M}{\rho} \abs{a_n \rho ^ n}
+  \]
+  also converges. By comparison test, $\sum \abs{n a_n x ^ {n - 1}}$ converges. Since $\rho < R$ was arbitrary, we can make $\rho$ as close to $R$ as we want, so the differentiated power series converges for all $\abs{x} < R$.
+  
+  Now suppose $\abs{x} > R$. 
+  \begin{lemma}
+    \label{lemma:roc-unbounded}
+    $\abs{a_n x ^ n}$ is unbounded.
+  \end{lemma}
+  \begin{proof}
+    Suppose $\abs{a_n x ^ n}$ is bounded. Then there exists $M \in \R$ such that 
+    \[
+      \abs{a_n x ^ n} \leq M \quad \forall n \in \N
+    \]
+    Now take arbitrary $r$ such that $\abs{x} > r > R$. Consider
+    \begin{align*}
+      \abs{a_n r ^ n} &= \abs{a_n x ^ n} \cdot \left(\frac{r}{\abs{x}}\right) ^ n \\ 
+      &\leq M \cdot \left(\frac{r}{\abs{x}}\right) ^ n
+    \end{align*}
+    We know that the series 
+    \[
+      \sumto[0]{n}{\infty} M \cdot \left(\frac{r}{\abs{x}}\right) ^ n
+    \]
+    is a geometric series with common ratio $< 1$, so it converges. By comparison, $\sum \abs{a_n r ^ n}$ converges as well. But then it should diverge since $r > R$, so we have a contradiction. Therefore, $\abs{a_n x ^ n}$ is unbounded.
+  \end{proof}
+  Since $\abs{a_n x ^ n}$ is unbounded by \Cref{lemma:roc-unbounded}, it follows that $\abs{n a_n x ^ {n - 1}}$ is unbounded as well, since $n \geq 1$. Then the sequence $n a_n x ^ {n - 1}$ does not converge to zero, so the series diverges. 
+\end{proof}
+We'll skip over the proof for the following lemma and take it for granted:
+\begin{lemma}
+  \label{lemma:diff-power-series}
+  Suppose the power series
+  \[
+    \sumto[0]{n}{\infty} a_n (x - c) ^ n
+  \]
+  has radius of convergence $R$ and converges to $f(x)$ for all $\abs{x - c} < R$. Then $f$ is differentiable in $\abs{x - c} < R$ and
+  \[
+    f'(x) = \sumto[0]{n}{\infty} n a_n (x - c) ^ {n - 1} \quad \text{for} \ \abs{x - c} < R
+  \]
+\end{lemma}
+If we apply \Cref{lemma:diff-power-series} recursively, then we get $f$ is infinitely differentiable in $\abs{x - c} < R$.
+
+% --------------------------------------------------------------------------------------------------
+
+\subsection{Smooth and analytic functions}
+\begin{definition}[Smooth functions]
+  A function $f: (a, b) \to \R$ is smooth, or infinitely differentiable, on $(a, b)$ if there exist continuous derivatives of all orders on $(a, b)$, i.e. $f ^ {(n)}$ exists for all $n \geq 1$.
+
+  Its derivatives are defined recursively by
+  \[
+    f ^ {(1)} = f', \ f ^ {(n + 1)} = (f ^ {(n)})'
+  \]
+\end{definition}
+\begin{definition}[Analytic functions]
+  A function $f: (a, b) \to \R$ is analytic if for every $c \in (a, b)$, there exists a power series with non-zero radius of convergence which converges to $f$ for every $x$ in some neighbourhood of $c$.
+\end{definition}
+Basically, a function $f$ is not analytic if its corresponding power series only converges at a certain point, i.e. has radius of convergence = 0. The power series must converge to $f$ for all the (infinitely many) points that are close enough to the centre of the power series. We will illustrate a well-known function which is smooth but not analytic, but first we will need to prove a lemma:
+\begin{lemma}
+  \label{lemma:x^n/e^x}
+  For all $n \in \N$, 
+  \[
+    \lim_{x \to \infty} \frac{x ^ n}{e ^ x} = 0
+  \]
+\end{lemma}
+\begin{proof}
+  The Maclaurin series of $e ^ x$ is
+  \[
+    e ^ x = \sumto[0]{n}{\infty} \frac{x ^ n}{n!} > \frac{x ^ k}{k!}
+  \]
+  for all $k \in \N$. Put $k = n + 1$, we get
+  \[
+    0 < \frac{x ^ n}{e ^ x} < \frac{x ^ n}{\dfrac{x ^ {n + 1}}{(n + 1)!}} = \frac{(n + 1)!}{x}
+  \]
+  The upper bound converges to 0 since it is just the sequence $\frac{1}{x}$ multiplied by a constant factor. By the sandwich theorem, we have the desired result.
+\end{proof}
+Now here's the smooth but not analytic function:
+\begin{prop}
+  \label{prop:phi-derivatives}
+  Define $\phi(x): \R \to \R$ by
+  \[
+    \phi(x) =
+    \begin{cases}
+      e ^ \frac{1}{x}, & x > 0 \\
+      0, & x \leq 0 
+    \end{cases}
+  \]
+  Then $\phi$ has derivatives of all orders at 0 and
+  \[
+    \phi ^ {(n)} (0) = 0 \quad \forall n \in \N
+  \]
+\end{prop}
+\begin{proof}
+  We can show (e.g. by induction) that $\phi ^ {(n)} (x)$ has the form 
+  \[
+    \phi ^ {(n)} (x) =
+    \begin{cases}
+      p_n\left(\frac{1}{x}\right) \, e ^ \frac{1}{x}, & x > 0 \\ 
+      0, & x < 0
+    \end{cases}
+  \]
+  Then we show by induction that $\phi ^ {(n)} (0) = 0$. 
+
+  For the base case, we consider both the left and right derivative at 0. Clearly, $\phi'(0 ^ -) = 0$ since $\phi(0) = 0$ and $\phi(h) = 0$ for all $h < 0$. Now we evaluate the right derivative:
+  \begin{align*}
+    \phi'(0 ^ +) &= \lim_{h \to 0 ^ +} \frac{\phi(h) - \phi(0)}{h} \\ 
+    &= \lim_{h \to 0 ^ +} \frac{e ^ {-\frac{1}{h}} - 0}{h} \\ 
+    &= \lim_{h \to 0 ^ +} \frac{e ^ {-\frac{1}{h}}}{h} \\ 
+    &= \lim_{x \to \infty} xe ^ {-x} \\ 
+    &= \lim_{x \to \infty} \frac{x}{e ^ x} \\ 
+    &= 0
+  \end{align*}
+  Since $\phi'(0 ^ -) = \phi'(0 ^ +) = 0$, we have $\phi'(0) = 0$. 
+
+  Suppose $\phi ^ {(k)} (0) = 0$ for some $k \in \N$. Since $\phi ^ {(k)} (h) = 0$ for all $h < 0$, it follows that $\phi ^ {(k + 1)} (0 ^ -) = 0$. We consider the right derivative:
+  \begin{align*}
+    \phi ^ {(k + 1)} (0) &= \lim_{h \to 0 ^ +} \frac{\phi ^ {(k)} (h) - \phi ^ {(k)} (0)}{h} \\ 
+    &= \lim_{h \to 0 ^ +} \frac{p_k\left(\frac{1}{h}\right) e ^ {-\frac{1}{h}} - 0}{h} \\ 
+    &= \lim_{x \to \infty} \frac{x p_k(x)}{e ^ x} \\ 
+    &= 0
+  \end{align*}
+  so we have $\phi ^ {(k + 1)} (0 ^ -) = \phi ^ {(k + 1)} (0 ^ +) = 0$.
+\end{proof}
+\begin{corollary}
+  $\phi$ is smooth but not analytic at 0.
+\end{corollary}
+\begin{proof}
+  From \Cref{prop:phi-derivatives}, we know that $\phi$ is smooth at 0. However, we note that for the Taylor series of $\phi$
+  \[
+    \sumto[0]{n}{\infty} \frac{\phi ^ {(n)} (0)}{n!} x ^ n
+  \]
+  the coefficient of every power of $x$ is 0, so every term is 0. Then the series converges (sums) to 0 for all $x$, so the series does not converge to $\phi$ in any neighbourhood of 0. 
+  \begin{intuition}
+    Even though $\phi(x) = 0$ for all $x < 0$, any neighbourhood of 0 must contain some $x > 0$ as well: as neighbourhoods are open intervals, and in order for any open interval to contain 0, its upper bound must $> 0$. But then $\phi(x) > 0$ for all $x > 0$, which does not agree with the Taylor series. So there does not exist a neighbourhood of 0 such that the series converges to $\phi(x)$ for every $x$ in the neighbourhood.
+  \end{intuition}
+\end{proof}
+
+% --------------------------------------------------------------------------------------------------
+
+\subsection{Maclaurin and Taylor series}
+\begin{definition}[Taylor series]
+  The Taylor series of a function $f$ is defined by
+  \[
+    f(x) = \sumto[0]{n}{\infty} \frac{f ^ {(n)} (c)}{n!} \, (x - c) ^ n
+  \]
+\end{definition}
+% Maybe include the proof of why the coefficients are \frac{f ^ {(n)} (c)}{n!}
+\begin{definition}[Maclaurin series]
+  The Maclaurin series of a function is the Taylor series centred at 0.
+\end{definition}
+We'll jump straight into examples.
+\begin{eg}
+  Find the Taylor series of
+  \[
+    f(x) = \frac{1}{x}
+  \]
+  centred around $x = 2$, and its radius of convergence.
+\end{eg}
+\begin{solution}
+  \begin{align*}
+    f(x) = x ^ {-1} &\implies f(2) = \frac{1}{2} \\
+    f'(x) = -x ^ {-2} &\implies f'(2) = -\frac{1}{4} \\ 
+    f''(x) = 2x ^ {-3} &\implies f''(2) = 2 \cdot \frac{1}{8}
+  \end{align*}
+  In general,
+  \begin{gather*}
+    f ^ {(n)} (x) = (-1) ^ n \cdot n! \, x ^ {-(n + 1)} \quad \text{for all} \ n \geq 0 \\
+    \implies f ^ {(n)} (2) = (-1) ^ n \cdot n! \, \cdot \frac{1}{2 ^ {n + 1}} 
+  \end{gather*}
+  So we have
+  \begin{align*}
+    f(x) &= \sumto[0]{n}{\infty} \frac{f ^ {(n)} (2)}{n!} (x - 2) ^ n \\ 
+    &= \sumto[0]{n}{\infty} \frac{\displaystyle (-1) ^ n \cdot n! \, \cdot \frac{1}{2 ^ {n + 1}}}{n!} (x - 2) ^ n \\ 
+    &= \sumto[0]{n}{\infty} \frac{(-1) ^ n}{2 ^ {n + 1}} (x - 2) ^ n
+  \end{align*}
+  The series converges if
+  \begin{align*}
+    \lim_{n \to \infty} \abs{\frac{a_{n + 1}}{a_n}} &= \lim_{n \to \infty} \abs{\frac{(-1) ^ {n + 1} (x - 2) ^ {n + 1}}{2 ^ {n + 2}} \cdot \frac{2 ^ {n + 1}}{(-1) ^ n (x - 2) ^ n}} \\
+    &= \frac{\abs{x - 2}}{2} \\
+    &< 1 \\
+    &\iff \abs{x - 2} < 2
+  \end{align*}
+  so the radius of convergence is 2.
+\end{solution}
+\begin{eg}
+  $ $\newline
+  \begin{enumerate}[(a)]
+    \item Find the Maclaurin series of $e ^ x$ and its radius of convergence.
+    \item Hence, find the Maclaurin series of $e ^ {-5x ^ 2}$ and its radius of convergence.
+  \end{enumerate}
+\end{eg}
+\begin{solution}
+  $ $\newline
+  \begin{enumerate}[(a)]
+    \item Let $f(x) = e ^ x$. We know that $f ^ {(n)} (x) = e ^ x$ for all $n \geq 0$, so
+          \[
+            f ^ {(n)} (0) = e ^ 0 = 1
+          \] 
+          Then the Maclaurin series is simply
+          \begin{align*}
+            e ^ x &= \sumto[0]{n}{\infty} \frac{f ^ {(n)} (0)}{n!} \, x ^ n \\ 
+            &= \sumto[0]{n}{\infty} \frac{x ^ n}{n!}
+          \end{align*}
+          The series converges if
+          \begin{align*}
+            \lim_{n \to \infty} \abs{\frac{a_{n + 1}}{a_n}} &= \lim_{n \to \infty} \abs{\frac{x ^ {n + 1}}{(n + 1)!} \cdot \frac{n!}{x ^ n}} \\ 
+            &= \abs{x} \lim_{n \to \infty} \frac{1}{n + 1} \\
+            &= 0 \\
+            &< 1
+          \end{align*}
+          so the series converges for all $x \in \R$, and the radius of convergence is $\infty$.
+    \item If there wasn't \textit{"hence"} before this part, it would be perfectly valid to find the Maclaurin series from scratch. However, we must use the result from (a). This isn't too hard. We substitute $-5x ^ 2$ into the series above:
+          \begin{align*}
+            e ^ {-5x ^ 2} &= \sumto[0]{n}{\infty} \frac{(-5x ^ 2) ^ n}{n!} \\ 
+            &= \sumto[0]{n}{\infty} (-1) ^ n \, 5 ^ n \, \frac{x ^ {2n}}{n!}
+          \end{align*}
+          The series converges for all $x \in \R$ (since $-5x ^ 2 \in \R$ for all $x$), so the radius of convergence is $\infty$.
+  \end{enumerate}
+\end{solution}
+\begin{eg}
+  Find the Maclaurin series for
+  \[
+    f(x) = x ^ 4 e ^ {-3x ^ 2}
+  \]
+  and its radius of convergence.
+\end{eg}
+\begin{solution}
+  Don't even try differentiating the expression.
+
+  We know the Maclaurin series for $e ^ x$:
+  \[
+    e ^ x = \sumto[0]{n}{\infty} \frac{x ^ n}{n!}
+  \] 
+  so we multiply $x ^ 4$ outside the summation and substitute in $-3x ^ 2$ to get
+  \begin{align*}
+    f(x) &= x ^ 4 \sumto[0]{n}{\infty} \frac{(-3x ^ 2) ^ n}{n!} \\
+    &= x ^ 4 \sumto[0]{n}{\infty} (-1) ^ n \, 3 ^ n \, \frac{x ^ {2n}}{n!} \\
+    &= \sumto[0]{n}{\infty} (-1) ^ n \, 3 ^ n \, \frac{x ^ {2n + 4}}{n!} \\
+  \end{align*}
+  The series converges if (we drop the $(-1) ^ n$ because its absolute value is 1)
+  \begin{align*}
+    \lim_{n \to \infty} \abs{\frac{a_{n + 1}}{a_n}} &= \lim_{n \to \infty} \abs{\frac{3 ^ {n + 1} x ^ {2n + 6}}{(n + 1)!} \cdot \frac{n!}{3 ^ n x ^ {2n + 4}}} \\
+    &= x ^ 2 \lim_{n \to \infty} \frac{3}{n + 1} \\
+    &= 0 \\
+    &< 1
+  \end{align*}
+  so the series converges for all $x \in \R$, so the radius of convergence is $\infty$.
+\end{solution}
+\begin{eg}
+  Find the Taylor series for
+  \[
+    f(x) = \ln x
+  \]
+  centred around $x = 2$, and its radius of convergence.
+\end{eg}
+\begin{solution}
+  \begin{align*}
+    f(x) = \ln x &\implies f(2) = \ln 2 \\
+    f'(x) = x ^ {-1} &\implies f'(2) = \frac{1}{2} \\
+    f''(x) = -x ^ {-2} &\implies f''(2) = -\frac{1}{4} \\ 
+    f'''(x) = 2x ^ {-3} &\implies f'''(2) = 2 \cdot \frac{1}{8} \\
+  \end{align*}
+  In general,
+  \begin{gather*}
+    f ^ {(n)} (x) = (-1) ^ {n - 1} \cdot (n - 1)! \, x ^ {-n} \quad \text{for all} \ n \geq 1 \\ 
+    \implies f ^ {(n)} (2) = (-1) ^ {n - 1} \cdot (n - 1)! \, \cdot \frac{1}{2 ^ n} 
+  \end{gather*}
+  Note that the general form of the derivative does not hold for $n = 0$. So we extract that out of the series to get
+  \begin{align*}
+    \ln x &= \ln 2 + \sumto{n}{\infty} \frac{(-1) ^ {n - 1} (n - 1)!}{2 ^ n \, n!} (x - 2) ^ n \\
+    &= \ln 2 + \sumto{n}{\infty} \frac{(-1) ^ {n - 1}}{n 2 ^ n} (x - 2) ^ n
+  \end{align*}
+  The series converges if
+  \begin{align*}
+    \lim_{n \to \infty} \abs{\frac{a_{n + 1}}{a_n}} &= \lim_{n \to \infty} \abs{\frac{(x - 2) ^ {n + 1}}{(n + 1) 2 ^ {n + 1}} \cdot \frac{n 2 ^ n}{(x - 2) ^ n}} \\
+    &= \frac{\abs{x - 2}}{2} \lim_{n \to \infty} \frac{n}{n + 1} \\
+    &= \frac{\abs{x - 2}}{2} \\
+    &< 1 \\ 
+    &\iff \abs{x - 2} < 2
+  \end{align*}
+  so the radius of convergence is 2.
+\end{solution}
+\begin{eg}
+  Find the Maclaurin series for
+  \[
+    \int \! \frac{\sin x}{x} \di x
+  \]
+\end{eg}
+\begin{solution}
+  The indefinite integral has no closed form. However, we know the Maclaurin series for $\sin x$:
+  \[
+    \sin x = \sumto[0]{n}{\infty} \frac{(-1) ^ {2n + 1}}{(2n + 1)!} \, x ^ {2n + 1}
+  \]
+  and we know that the integral of a power series is equal to the term-by-term integrated series. So we first find the Maclaurin series for 
+  \[
+    \frac{\sin x}{x}
+  \]
+  and then integrate the series term by term.
+  \begin{align*}
+    \frac{\sin x}{x} &= \frac{1}{x} \sumto[0]{n}{\infty} \frac{(-1) ^ {2n + 1}}{(2n + 1)!} \, x ^ {2n + 1} \\
+    &= \sumto[0]{n}{\infty} \frac{(-1) ^ {2n + 1}}{(2n + 1)!} \, x ^ {2n}
+  \end{align*}
+  Then
+  \begin{align*}
+    \int \! \frac{\sin x}{x} \di x &= \int \! \sumto[0]{n}{\infty} \frac{(-1) ^ {2n + 1}}{(2n + 1)!} \, x ^ {2n} \di x \\
+    &= C + \sumto[0]{n}{\infty} \int \! \frac{(-1) ^ {2n + 1}}{(2n + 1)!} \, x ^ {2n} \di x \\
+    &= C + \sumto[0]{n}{\infty} \frac{(-1) ^ {2n + 1}}{(2n + 1) (2n + 1)!} \, x ^ {2n + 1}
+  \end{align*}
+\end{solution}
+\begin{eg}
+  Find the Taylor series of
+  \[
+    x ^ 2 + 8x + 1
+  \]
+  centred around $x = 10$, and its radius of convergence.
+\end{eg}
+\begin{solution}
+  \begin{gather*}
+    \begin{aligned}
+      f(x) = x ^ 2 + 8x + 1 &\implies f(10) = 181 \\
+      f'(x) = 2x + 8 &\implies f'(10) = 28 \\
+      f''(x) = 2 &\implies f''(10) = 2
+    \end{aligned} \\
+    f ^ {(n)} (x) = 0 \quad \text{for all} \ n \geq 3
+  \end{gather*}
+  So we have
+  \begin{align*}
+    f(x) &= \sumto[0]{n}{\infty} \frac{f ^ {(n)} (10)}{n!} \, (x - 10) ^ n \\
+    &= 181 + 28 (x - 10) + \frac{2}{2!} (x - 10) ^ 2 \\
+    &= 181 + 28 (x - 10) + (x - 10) ^ 2
+  \end{align*}
+  Since the series is finite, it converges for all $x \in \R$, so the radius of convergence is $\infty$.
+\end{solution}
