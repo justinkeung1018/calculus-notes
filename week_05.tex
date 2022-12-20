@@ -1,0 +1,733 @@
+\chapter{Differentiation}
+
+% ==================================================================================================
+
+\section{Definition}
+\begin{definition}[Newton's difference quotient]
+  Let $f: (a, b) \to \R$. The Newton's difference quotient at $x$ for $f$ is given by
+  \[
+    \frac{\Delta f(x)}{\Delta x} = \frac{f(x + h) - f(x)}{h}
+  \]
+\end{definition}
+\begin{definition}[Derivative]
+  \label{def:derivative}
+  Suppose $f: (a, b) \to \R$ and let $c$ be an interior point, i.e. $a < c < b$. Then $f$ is differentiable at $c$ with derivative $f'(c)$ if
+  \[
+    \lim_{h \to 0} \frac{f(c + h) - f(c)}{h} = f'(c)
+  \]
+  exists.
+\end{definition}
+\begin{definition}[Left and right derivatives]
+  \label{def:left-right-derivatives}
+  Suppose $f: [a, b] \to \R$. Then $f$ is right-differentiable at $a \leq c < b$ with right derivative $f'(c ^ +)$ if
+  \[
+    \lim_{h \to 0 ^ +} \frac{f(c + h) - f(c)}{h} = f'(c ^ +)
+  \]
+  exists. Similarly, $f$ is left-differentiable at $a < c \leq b$ with left derivative $f'(c ^ -)$ if
+  \[
+    \lim_{h \to 0 ^ -} \frac{f(c + h) - f(c)}{h} = f'(c ^ -)
+  \]
+  exists.
+\end{definition}
+In \Cref{def:derivative}, $c$ must be an interior point because we want to evaluate a two-sided limit as the argument of the function approaches $c$, which requires the existence of an open (two-sided) neighbourhood of $c$. On the other hand, \Cref{def:left-right-derivatives} can be useful for points of discontinuity or at the boundaries, since we only need a one-sided neighbourhood to evaluate the one-sided limits.
+
+Using the fact that a two-sided limit exists if and only if both of its one-sided limits exist and are equal, we can now provide an alternative, often more fool-proof, definition of differentiability:
+\begin{definition}
+  A function is differentiable if and only if its left and right derivatives exist and are equal.
+\end{definition}
+\begin{eg}
+  Find the derivative of $f: \R \to \R$ defined by
+  \[
+    f(x) =
+    \begin{cases}
+      x ^ 2, & x > 0 \\ 
+      0, & x \leq 0
+    \end{cases}
+  \]
+\end{eg}
+\begin{solution}
+  For $x > 0$, the derivative $f'(x)$ is given by
+  \begin{align*}
+    f'(x) &= \lim_{h \to 0} \frac{f(x + h) - f(x)}{h} \\ 
+    &= \lim_{h \to 0} \frac{(x + h) ^ 2 - x ^ 2}{h} \\ 
+    &= \lim_{h \to 0} \frac{2hx + h ^ 2}{h} \\ 
+    &= \lim_{h \to 0} 2x + h \\
+    &= 2x
+  \end{align*}
+  \begin{remark}
+    We are allowed to substitute $f(x + h)$ with $(x + h) ^ 2$ here. This works because $x > 0$, so regardless if $h$ approaches 0 from the left or right, as long as $h$ is sufficiently close to 0, $f(x + h)$ will evaluate to $(x + h) ^ 2$.
+  \end{remark}
+  For $x < 0$, the derivative $f'(x)$ is given by
+  \begin{align*}
+    f'(x) &= \lim_{h \to 0} \frac{f(x + h) - f(x)}{h} \\ 
+    &= \lim_{h \to 0} \frac{0 - 0}{h} \\ 
+    &= 0
+  \end{align*}
+  \begin{remark}
+    Similar to above, as long as $h$ is sufficiently close to $x$, $f(x + h)$ will evaluate to 0.
+  \end{remark}
+  For $x = 0$, we consider the left and right derivatives of $f$ at 0. The right derivative is 
+  \begin{align*}
+    f'(0 ^ +) &= \lim_{h \to 0 ^ +} \frac{f(h) - f(0)}{h} \\
+    &= \lim_{h \to 0 ^ +} \frac{h ^ 2 - 0}{h} \\ 
+    &= \lim_{h \to 0 ^ +} h \\
+    &= 0
+  \end{align*}
+  The left derivative is
+  \begin{align*}
+    f'(0 ^ -) &= \lim_{h \to 0 ^ -} \frac{f(h) - f(0)}{h} \\ 
+    &= \lim_{h \to 0 ^ -} \frac{0 - 0}{h} \\ 
+    &= 0
+  \end{align*}
+  Since $f'(0 ^ -) = 0 = f'(0 ^ +)$, the derivative $f'(0)$ exists and $f'(0) = 0$. Therefore, $f$ is differentiable on $\R$ with derivative $f'$ given by
+  \[
+    f'(x) =
+    \begin{cases}
+      2x, & x > 0 \\ 
+      0, & x \leq 0
+    \end{cases}
+  \]
+\end{solution}
+\begin{eg}
+  Determine if $f: \R \to \R$ defined by $f(x) = \abs{x}$ is differentiable at 0.
+\end{eg}
+\begin{solution}
+  Since $\abs{x} = x$ for $x > 0$, the right derivative at 0 is
+  \[
+    f'(0 ^ +) = \lim_{h \to 0 ^ +} \frac{f(h) - f(0)}{h} = \lim_{h \to 0 ^ +} \frac{\abs{h}}{h} = \lim_{h \to 0 ^ +} \frac{h}{h} = 1
+  \]
+  Since $\abs{x} = -x$ for $x < 0$, the left derivative at 0 is
+  \[
+    f'(0 ^ -) = \lim_{h \to 0 ^ -} \frac{f(h) - f(0)}{h} = \lim_{h \to 0 ^ -} \frac{\abs{h}}{h} = \lim_{h \to 0 ^ -} \frac{-h}{h} = -1
+  \]
+  As $f'(0 ^ +) \neq f'(0 ^ -)$, $f'(0)$ does not exist and $f$ is not differentiable at 0.
+\end{solution}
+\begin{eg}
+  For which values of $x$ is $f: \R \to \R$ defined by
+  \[
+    f(x) = 
+    \begin{cases}
+      x \sin \frac{1}{x}, & x \neq 0 \\ 
+      0, & x = 0
+    \end{cases}
+  \]
+  differentiable? For these values of $x$, find $f'(x)$. 
+\end{eg}
+\begin{solution}
+  For $x \neq 0$, the derivative is given by the product and chain rules:
+  \begin{align*}
+    f'(x) &= x \cdot \cos \frac{1}{x} \cdot \left(-\frac{1}{x ^ 2}\right) + \sin \frac{1}{x} \cdot 1 \\ 
+    &= \sin \frac{1}{x} - \frac{1}{x} \cos \frac{1}{x}
+  \end{align*}
+  $f'(0)$ does not exist since the limit
+  \[
+    \lim_{h \to 0} \frac{f(h) - f(0)}{h} = \lim_{h \to 0} \frac{h \sin \frac{1}{h}}{h} = \lim_{h \to 0} \sin \frac{1}{h}
+  \]
+  does not exist, so $f$ is not differentiable at 0.
+\end{solution}
+\begin{eg}
+  For which values of $x$ is $f : \R \to \R$ defined by 
+  \[
+    f(x) = 
+    \begin{cases}
+      x ^ 2 \sin \frac{1}{x}, & x \neq 0 \\ 
+      0, & x = 0
+    \end{cases}
+  \]
+  differentiable? For these values of $x$, find $f'(x)$.
+\end{eg}
+\begin{solution}
+  For $x \neq 0$, the derivative is given by
+  \[
+    f'(x) = 2x \sin \frac{1}{x} - \cos \frac{1}{x}
+  \]
+  For $x = 0$, 
+  \[
+    \lim_{h \to 0} \frac{f(h) - f(0)}{h} = \lim_{h \to 0} \frac{h ^ 2 \sin \frac{1}{h}}{h} = \lim_{h \to 0} h \sin \frac{1}{h} = 0
+  \]
+  so $f'(0)$ exists and $f'(0) = 0$.
+\end{solution}
+\begin{remark}
+  Observe that $\lim_{x \to 0} f'(x)$ does not exist because of the $\cos \frac{1}{x}$ term, but $f'(0)$ exists. So $f'$ is not continuous at 0, and we say that $f$ is not continuously differentiable.
+\end{remark}
+
+% ==================================================================================================
+
+\section{Properties of the derivative}
+
+% --------------------------------------------------------------------------------------------------
+
+\subsection{Differentiability and continuity}
+\begin{theorem}[Continuity]
+  \label{thm:differentiability-implies-continuity}
+  If $f: (a, b) \to \R$ is differentiable at $c \in (a, b)$, then $f$ is continuous at $c$.
+\end{theorem}
+\begin{proof}
+  Suppose $f$ is differentiable at $c$. Then
+  \[
+    \lim_{h \to 0} \frac{f(c + h) - f(c)}{h} = f'(c)
+  \]
+  exists.
+
+  We want to show that
+  \[
+    \lim_{x \to c} f(x) = f(c)
+  \]
+  or equally,
+  \[
+    \lim_{h \to 0} f(c + h) = f(c)
+  \]
+  or equally,
+  \[
+    \lim_{h \to 0} f(c + h) - f(c) = 0
+  \]
+  If we divide the expression inside the limit by $h$ then we get the definition of the derivative. So the proof follows:
+  \begin{align*}
+    \lim_{h \to 0} f(c + h) - f(c) &= \lim_{h \to 0} h \cdot \frac{f(c + h) - f(c)}{h} \\ 
+    &= \lim_{h \to 0} h \cdot \lim_{h \to 0} \frac{f(c + h) - f(c)}{h} \\ 
+    &= f'(c) \lim_{h \to 0} h \\ 
+    &= 0
+  \end{align*}
+  so by the linearity of limits, we get 
+  \[
+    \lim_{h \to 0} f(c + h) = f(c)
+  \]
+\end{proof}
+
+% --------------------------------------------------------------------------------------------------
+
+\subsection{Chain rule}
+Since we're not JMC students, we'll not care too much about the domains and codomains of the functions:
+\begin{theorem}[Chain rule]
+  If $g$ is differentiable at $c$ and $f$ is differentiable at $g(c)$, then $f \circ g$ is differentiable at $c$ with derivative given by 
+  \[
+    (f \circ g)'(c) = f'(g(c)) \cdot g'(c)
+  \]
+\end{theorem}
+The following proof is adapted from \href{https://en.wikipedia.org/wiki/Chain_rule#First_proof}{the first proof on the Wikipedia page}, with a bit more explanation.
+\begin{proof}
+  By definition of the derivative, the LHS is
+  \[
+    (f \circ g)'(c) = \lim_{x \to c} \frac{f(g(x)) - f(g(c))}{x - c}
+  \]
+  and the RHS is
+  \[
+    f'(g(c)) \cdot g'(c) = \lim_{g(x) \to g(c)} \frac{f(g(x)) -  f(g(c))}{g(x) - g(c)} \cdot \lim_{x \to c} \frac{g(x) - g(c)}{x - c}
+  \]
+  There are two issues with the first term in the product. The first issue is that the limit now goes from $g(x) \to g(c)$ instead of $x \to c$, but this can be easily fixed, as we will see later. The second issue is there may exist $g(x) - g(c)$ such that $x \neq c$ but $g(x) - g(c)$. Why is this an issue? Suppose $c = 0$ and $g$ is defined by
+  \[
+    g(x) = 
+    \begin{cases}
+      x ^ 2 \sin\frac{1}{x}, & x \neq 0 \\ 
+      0, & x = 0
+    \end{cases}
+  \]
+  The $\sin\frac{1}{x}$ term will keep oscillating around 0: no matter how close $x$ is to 0, there must exist some $x_0 < x$ such that $g(x_0) = 0$. Then, recalling the definition of limits:
+  \[
+    \forall \epsilon > 0, \; \exists \delta > 0: 0 < \abs{x} < \delta \implies \abs{\frac{f(g(x)) -  f(g(c))}{g(x) - g(c)} - \text{blah}} < \epsilon
+  \]
+  For all $\delta > 0$, this $x_0$ will make the implication false because
+  \[
+    \frac{f(g(x_0)) -  f(g(c))}{g(x_0) - g(c)}
+  \]
+  is undefined and so the limit is undefined. But we know that $g'(0)$ exists (even though $g'$ is not continuous at 0), so $g$ should be continuous at 0, and the chain rule should work in this case. To work around this issue, we introduce another function $Q$ defined by
+  \[
+    Q(y) =
+    \begin{cases}
+      \dfrac{f(y) - f(g(c))}{y - g(c)}, & y \neq g(c) \\ 
+      f'(g(c)), & y = g(c)
+    \end{cases}
+  \]
+  \begin{prop}
+    \label{prop:chain-rule-diff-quotient}
+    \[
+      \frac{f(g(x)) - f(g(c))}{x - c} \equiv Q(g(x)) \cdot \frac{g(x) - g(c)}{x - c}
+    \]
+  \end{prop}
+  \begin{proof}
+    When $g(x) \neq g(c)$, 
+    \[
+      Q(g(x)) \cdot \frac{g(x) - g(c)}{x - c} \equiv \frac{f(g(x)) - f(g(c))}{g(x) - g(c)} \cdot \frac{g(x) - g(c)}{x - c} \equiv \frac{f(g(x)) - f(g(c))}{x - c}
+    \]
+
+    When $g(x) = g(c)$, the RHS becomes
+    \[
+      Q(g(c)) \cdot \frac{g(x) - g(c)}{x - c} = 0 \cdot \frac{g(x) - g(c)}{x - c} = 0
+    \]
+    and the LHS also evaluates to 0 since $f(g(x)) = f(g(c))$.
+  \end{proof}
+  It follows from \Cref{prop:chain-rule-diff-quotient} that it is sufficient to show that
+  \[
+    \lim_{x \to c} \left[Q(g(x)) \cdot \frac{g(x) - g(c)}{x - c}\right] = f'(g(c)) \cdot g'(c)
+  \]
+  The limit exists if the limits of its two factors exist (i.e. do not shoot off to infinity), in which case it is equal to the product of the limits of the two factors. So we find the limits of the two factors separately, and if they both exist, then we have found the limit of the product.
+
+  Since $g$ is differentiable at $c$,
+  \[
+    \lim_{x \to c} \frac{g(x) - g(c)}{x - c} = g'(c)
+  \]
+  exists.
+
+  Since $f$ is differentiable at $g(c)$,
+  \[
+    \lim_{y \to g(c)} \frac{f(y) - f(g(c))}{y - g(c)} = f'(g(c))
+  \]
+  exists, and since $Q(g(c)) = f'(g(c))$, we get 
+  \[
+    \lim_{y \to g(c)} Q(y) = Q(g(c))
+  \]
+  so $Q$ is continuous at $g(c)$.
+  \begin{remark}
+    Technically, $Q$ doesn't have to be continuous so we can define $Q(g(c))$ to be anything, but we define it to be $f'(g(c))$ so that everything can fall into place a bit more nicely, and there's no reason not to make $Q$ continuous when we can easily do so.
+  \end{remark}
+  As $g$ is continuous at $c$, we have $x \to c$ implies $g(x) \to g(c)$ (resolving the first issue mentioned above), and so
+  \begin{align*}
+    \begin{aligned}
+      \lim_{x \to c} Q(g(x)) &= \lim_{y \to g(c)} Q(y) &&\quad \text{by continuity of $g$ at $c$} \\ 
+      &= Q(g(c)) &&\quad \text{by continuity of $Q$ at $g(c)$} \\
+      &= f'(g(c))
+    \end{aligned}
+  \end{align*}
+  Since both limits exist, we are done.
+\end{proof}
+
+% --------------------------------------------------------------------------------------------------
+
+\subsection{Product and quotient rules}
+\begin{theorem}[Product rule]
+  If $f, g: (a, b) \to \R$ are differentiable at $c \in (a, b)$, then $fg$ is differentiable at $c$ with derivative 
+  \[
+    (fg)'(c) = f'(c)g(c) + f(c)g'(c)
+  \]
+\end{theorem}
+\begin{proof}
+  \begin{align*}
+    (fg)'(c) &= \lim_{h \to 0} \frac{f(c + h)g(c + h) - f(c)g(c)}{h} \\ 
+    &= \lim_{h \to 0} \frac{f(c + h)g(c + h) - f(c)g(c + h) + f(c)g(c + h) - f(c)g(c)}{h} \\ 
+    &= \lim_{h \to 0} \frac{f(c + h) - f(c)}{h} \cdot \lim_{h \to 0} g(c + h) + f(c) \lim_{h \to 0} \frac{g(c + h) - g(c)}{h} \\ 
+    &\begin{aligned}
+    &= f'(c) \lim_{h \to 0} g(c + h) + f(c)g'(c) &&\quad \text{by differentiability of $f$ and $g$} \\
+    &= f'(c)g(c) + f(c)g'(c) &&\quad \text{by continuity of $g$}
+    \end{aligned}
+  \end{align*}
+\end{proof}
+\begin{theorem}[Quotient rule]
+  If $f, g: (a, b) \to \R$ are differentiable at $c \in (a, b)$, then $\left(\frac{f}{g}\right)$ is differentiable at $c$ with derivative 
+  \[
+    \left(\frac{f}{g}\right)'(c) = \frac{f'(c)g(c) - f(c)g'(c)}{[g(c)] ^ 2}
+  \]
+\end{theorem}
+The first proof is similar to the proof for the product rule.
+\begin{proof}
+  \begin{align*}
+    \left(\frac{f}{g}\right) &= \lim_{h \to 0} \dfrac{\frac{f(c + h)}{g(c + h)} - \frac{f(c)}{g(c)}}{h} \\ 
+    &= \lim_{h \to 0} \frac{f(c + h)g(c) - f(c)g(c + h)}{h \cdot g(c)g(c + h)} \\ 
+    &= \lim_{h \to 0} \frac{1}{g(c)g(c + h)} \cdot \lim_{h \to 0} \frac{f(c + h)g(c) - f(c)g(c) + f(c)g(c) - f(c)g(c + h)}{h} \\ 
+    &\begin{aligned}
+      &= \frac{1}{[g(c)] ^ 2} \lim_{h \to 0} \frac{f(c + h)g(c) - f(c)g(c) + f(c)g(c) - f(c)g(c + h)}{h} &&\quad \text{by continuity of $g$} \\ 
+      &= \frac{1}{[g(c)] ^ 2} \left[g(c) \lim_{h \to 0} \frac{f(c + h) - f(c)}{h} - f(c) \lim_{h \to 0} \frac{g(c + h) - g(c)}{h}\right] \\ 
+      &= \frac{1}{[g(c)] ^ 2} \left[g(c)f'(c) - f(c)g'(c)\right] &&\quad \text{by differentiability of $f$ and $g$} \\ 
+      &= \frac{f'(c)g(c) - f(c)g'(c)}{[g(c)] ^ 2}
+    \end{aligned}
+  \end{align*}
+\end{proof}
+The second proof combines the product and chain rules. 
+\begin{proof}
+  By the chain rule,
+  \[
+    \frac{\di}{\di x} \frac{1}{g(x)} = \frac{\di}{\di \, [g(x)]} \left(\frac{1}{g(x)}\right) \cdot \frac{\di}{\di x} g(x) = -\frac{1}{[g(x)] ^ 2} \cdot g'(x) = -\frac{g'(x)}{[g(x)] ^ 2}
+  \]
+  Substituting $g$ with $\left(\frac{1}{g}\right)$ into the product rule,
+  \begin{align*}
+    \left(\frac{f}{g}\right)'(c) &= f'(c) \left(\frac{1}{g}\right) + f(c) \left(\frac{1}{g}\right)' \\
+    &= \frac{f'(c)}{g(c)} + f(c) \cdot \left(-\frac{g'(c)}{[g(c)] ^ 2}\right) \\
+    &= \frac{f'(c)}{g(c)} - \frac{f(c)g'(c)}{[g(c)] ^ 2} \\ 
+    &= \frac{f'(c)g(c) - f(c)g'(c)}{[g(c)] ^ 2}
+  \end{align*}
+\end{proof}
+
+% --------------------------------------------------------------------------------------------------
+
+\subsection{Extreme values}
+Suppose $f: A \to \R$.
+\begin{definition}[Global and local maxima]
+  $f$ has a global maximum at $c \in A$ if
+  \[
+    f(x) \leq f(c) \quad \forall x \in A
+  \]
+  and $f$ has a local maximum at $c \in A$ if there exists a neighbourhood $U$ of $c$ such that
+  \[
+    f(x) \leq f(c) \quad \forall x \in A \cap U
+  \]
+\end{definition}
+\begin{definition}[Global and local minima]
+  $f$ has a global minimum at $c \in A$ if
+  \[
+    f(x) \geq f(c) \quad \forall x \in A
+  \]
+  and $f$ has a local minimum at $c \in A$ if there exists a neighbourhood $U$ of $c$ such that
+  \[
+    f(x) \geq f(c) \quad \forall x \in A \cap U
+  \]
+\end{definition}
+\begin{theorem}[Fermat's theorem]
+  \label{thm:fermat}
+  Suppose $f: A \to \R$ has a local extreme value at an interior point $c \in A$ and $f$ is differentiable at $c$. Then $f'(c) = 0$.
+\end{theorem}
+\begin{proof}
+  We consider the case where $f$ has a local minimum at $c$. The case where $c$ is a local maximum follows similarly, only with some inequalities reversed.
+
+  If $f$ has a local minimum at $c$, then there exists a $\delta$-neighbourhood $(c - \delta, c + \delta)$ at $c$ such that
+  \[
+    f(x) \geq f(c) \quad \forall x \in (c - \delta, c + \delta)
+  \]
+  For every $x \in (c, c + \delta)$ we have $x - c > 0$ and $f(x) - f(c) \geq 0$. So
+  \[
+    \frac{f(x) - f(c)}{x - c} \geq 0
+  \]
+  and therefore
+  \[
+    f'(c) = \lim_{x \to c ^ +} \frac{f(x) - f(c)}{x - c} \geq 0
+  \]
+  Also, for every $x \in (c - \delta, c)$ we have $x - c < 0$ and $f(x) - f(c) \geq 0$. So
+  \[
+    \frac{f(x) - f(c)}{x - c} \leq 0
+  \]
+  and therefore
+  \[
+    f'(c) = \lim_{x \to c ^ -} \frac{f(x) - f(c)}{x - c} \leq 0
+  \]
+  \begin{remark}
+    Since $f'(c)$ exists, 
+    \[
+      \lim_{x \to c} \frac{f(x) - f(c)}{x - c}
+    \]
+    exists and is equal to $f'(c)$. Since the two-sided limit exists, the left and right hand limits exist and are equal to the two-sided limit, which is equal to $f'(c)$.
+  \end{remark}
+  Combining the two inequalities, we get 
+  \[
+    0 \leq f'(c) \leq 0
+  \]
+  so $f'(c) = 0$.
+\end{proof}
+\begin{remark}
+  Note that $c$ must be an interior point, since the proof involves the two-sided limit of the difference quotient at $c$. Otherwise, if $c$ is at a boundary point, then only one of the inequalities will be defined. For instance, if $a$ is a local maximum, since only the right hand limit exists, we get $f'(a ^ +) \leq 0$.
+\end{remark}
+\Cref{thm:fermat} tells us that the global and local extrema of $f: A \to \R$ must be either:
+\begin{enumerate}[(1)]
+  \item Boundary points of $A$
+  \item (Interior) points where $f$ is not differentiable
+  \item Stationary points of $f$
+\end{enumerate}
+Examining the statement of \Cref{thm:fermat}, we first try to negate the antecedent. Negating the first conjunct ($c$ is an interior point) gives us (1). Negating the second conjunct ($f$ is differentiable at $c$) gives us (2). It is sufficient to only consider interior points here, since (1) also covers the cases where the boundary points are not differentiable. If the antecedent is true, then the consequent must be true as well, which gives us (3). As global extrema must be local extrema, \Cref{thm:fermat} applies to global extrema as well.
+
+% ==================================================================================================
+
+\section{Mean value theorem}
+\begin{theorem}[Rolle's theorem]
+  \label{thm:rolle}
+  Suppose that $f: [a, b] \to \R$ is continuous on $[a, b]$ and differentiable on $(a, b)$, and $f(a) = f(b)$. Then there exists $c \in (a, b)$ such that $f'(c) = 0$.
+\end{theorem}
+\begin{proof}
+  By the Weierstrass extreme value theorem, $f$ attains its global maximum and minimum on $[a, b]$. If they are both attained at the same endpoint, then $f$ is constant, so $f'(c) = 0$ for every $c \in (a, b)$. Otherwise, at least one global extremum is attained at an interior point $c$. From the definition of global and local extrema, this extremum must also be a local extremum. By \Cref{thm:fermat}, $f'(c) = 0$.
+  \begin{remark}
+    If the extremum is a minimum, for example, then $f(x) \geq f(c)$ for all $x \in [a, b]$, then any arbitrary neighbourhood $U$ of $c$ would satisfy the definition of local minima, namely $f(x) \leq f(c)$ for all $x \in [a, b] \cap U$. 
+  \end{remark}
+\end{proof}
+Note that we require continuity on the closed interval $[a, b]$ but differentiability only on the open interval $(a, b)$. This is because the boundary points are only relevant when both of the global extrema are at the boundary points, in which case we don't care about the derivative as $f$ is constant.
+
+We generalise \Cref{thm:rolle} to the mean value theorem:
+\begin{theorem}[Mean value theorem]
+  \label{thm:mean-value}
+  Suppose $f: [a, b] \to \R$ is continuous on $[a, b]$ and differentiable on $(a, b)$. Then there exists $c \in (a, b)$ such that
+  \[
+    f'(c) = \frac{f(b) - f(a)}{b - a}
+  \]
+\end{theorem}
+\begin{intuition}
+  We want to generate a new function $g: [a, b] \to \R$ based on $f$ that satisfies $g(a) = g(b)$ (as well as continuity and differentiability, of course). This allows us to apply \Cref{thm:rolle} and get $g'(c) = 0$. We want to extract $f'(c)$ from the fact that $g'(c) = 0$. So we start by reverse engineering $g'$:
+  \[
+    f'(c) = \frac{f(b) - f(a)}{b - a} \quad \iff \quad f'(c) - \frac{f(b) - f(a)}{b - a} = 0 = g'(c)
+  \]
+  Let 
+  \[
+    g'(x) = f'(x) - \frac{f(b) - f(a)}{b - a}
+  \]
+  Integrating both sides, we get
+  \[
+    g(x) = f(x) - \frac{f(b) - f(a)}{b - a}(x)
+  \]
+  We want $g(a) = g(b)$. To make our lives easier, suppose $g(a) = g(b) = 0$. Consider
+  \[
+    g(a) = f(a) - \frac{f(b) - f(a)}{b - a} \cdot a
+  \]
+  We can easily get rid of $f(a)$ by subtracting it from $g(a)$. The other part is a rather hairy constant times $a$, so instead of subtracting it we will replace $x$ with $x - a$. So we have this new definition of $g$:
+  \[
+    g(x) = f(x) - f(a) - \frac{f(b) - f(a)}{b - a}(x - a)
+  \]
+  and we can check that $g(b) = 0$ as well. As $g$ is just a linear combination of continuous and differentiable functions, $g$ has the same continuity and differentiability properties as $f$.
+\end{intuition}
+\begin{proof}
+  The function $g: [a, b] \to \R$ defined by 
+  \[
+    g(x) = f(x) - f(a) - \frac{f(b) - f(a)}{b - a}(x - a)
+  \]
+  is continuous on $[a, b]$ and differentiable on $(a, b)$ with
+  \[
+    g'(x) = f'(x) - \frac{f(b) - f(a)}{b - a}
+  \]
+  Also, $g(a) = g(b) = 0$. By \Cref{thm:rolle}, there exists an interior point $c \in (a, b)$ such that $g'(c) = 0$. Rearranging the equality gives us the result.
+\end{proof}
+
+% --------------------------------------------------------------------------------------------------
+
+\subsection{Applications}
+\begin{theorem}
+  Suppose $f: (a, b) \to \R$ is differentiable. Then $f$ is increasing if and only if $f'(x) \geq 0$ for every $x \in (a, b)$. Moreover, if $f'(x) > 0$ for every $x \in (a, b)$, then $f$ is strictly increasing.
+\end{theorem}
+\begin{proof}
+  \textbf{Only if.} Suppose $f$ is increasing. We want to show that
+  \[
+    \lim_{h \to 0} \frac{f(x + h) - f(x)}{h} \geq 0
+  \]
+  For $h > 0$, $f(x + h) - f(x) > 0$ as $f$ increasing, so the difference quotient $> 0$. For $h < 0$, $f(x + h) - f(x) < 0$ as $f$ increasing, so the difference quotient also $> 0$. So the difference quotient $> 0$ for all $h \neq 0$. Then we are done.
+  
+  \textbf{If.} Suppose $f'(x) \geq 0$ for every $x \in (a, b)$. Take arbitrary $x, y \in (a, b)$ such that $a < x < y < b$. By the mean value theorem, there exists some $c$ between $x$ and $y$ such that
+  \[
+    f'(c) = \frac{f(y) - f(x)}{y - x}
+  \]
+  But then $f'(c) \geq 0$. Since $y - x > 0$, it must be that $f(y) - f(x) \geq 0$, so $f$ is increasing. If $f'(c) > 0$, then $f(y) - f(x) > 0$, so $f$ is strictly increasing.
+\end{proof}
+Note that if $f$ is strictly increasing, it does not follow that $f'(x) > 0$ for every $x \in (a, b)$. For example, the function $f(x) = x ^ 3$.
+
+% ==================================================================================================
+
+\section{Taylor's theorem}
+
+\begin{definition}[Taylor polynomial]
+  Let $f: (a, b) \to \R$ and suppose $f$ is $n$ times differentiable, i.e. $f'$, $f''$, $f'''$, \ldots, $f ^ {(n)}$ exist on $(a, b)$. The Taylor polynomial of degree $n$ of $f$ at $c \in (a, b)$ is
+  \begin{gather*}
+    P_n(x) = f(c) + f'(c)(x - c) + \frac{1}{2!} f''(c) (x - c) ^ 2 + \cdots + \frac{1}{n!} f ^ {(n)} (c) (x - c) ^ n \\ 
+    = \sum_{k = 0}^{n} \frac{1}{k!} f ^ {(k)} (c) (x - c) ^ k
+  \end{gather*}
+\end{definition}
+
+If $f$ is infinitely differentiable and the derivatives at $c$ do not vanish (are not equal to 0), then the Taylor polynomial will only ever be an approximation of $f$. The error between this approximation and the true value of the function is denoted by $R_n$ with
+\[
+  f(x) = P_n(x) + R_n(x)
+\]
+
+\begin{theorem}[Taylor's theorem]
+  \label{thm:taylor}
+  Suppose $f: (a, b) \to \R$ has $n + 1$ derivatives on $(a, b)$ and let $c \in (a, b)$. For every $x \in (a, b)$, there exists $\xi$ between $c$ and $x$ (either $c < \xi < x$ or $x < \xi < c$) such that
+  \[
+    f(x) = f(c) + f'(c)(x - c) + \frac{1}{2!} f''(c) (x - c) ^ 2 + \cdots + \frac{1}{n!} f ^ {(n)} (c) (x - c) ^ n + R_n(x)
+  \]
+  with
+  \[
+    R_n(x) = \frac{1}{(n + 1)!} f ^ {(n + 1)} (\xi) (x - c) ^ {n + 1}
+  \]
+  This form of the remainder is called the Lagrange form, or the Lagrange error term.
+\end{theorem}
+The remainder term can take many other forms, but we'll only cover the Lagrange form here.
+\begin{intuition}
+  Since we only want to show the existence of such $\xi$, this is a big hint that we will need to use either Rolle's theorem (\Cref{thm:rolle}) or the mean value theorem (\Cref{thm:mean-value}) at some point. We want to show that the remainder, expressed in terms of $f$, is equal to the given form, so we define another function $g$ to disambiguate it from $R_n$:
+  \[
+    g(?) = f(x) - f(c) - f'(c)(x - c) - \frac{1}{2!} f''(c) (x - c) ^ 2 - \cdots - \frac{1}{n!} f ^ {(n)} (c) (x - c) ^ n
+  \]
+  What should the variable be? This expression can either be $g(x)$ or $g(c)$ (probably not $g(n)$). We choose it to be $g(c)$, so the general function is defined by 
+  \[
+    g(t) = f(x) - f(t) - f'(t)(x - t) - frac{1}{2!} f''(t) (x - t) ^ 2 - \cdots - \frac{1}{n!} f ^ {(n)} (t) (x - t) ^ n
+  \]
+  Now we try differentiating $g$ to see what we get out of it. Before we do that, we rewrite $g$ using a summation:
+  \[
+    g(t) = f(x) - f(t) - \sum_{k = 1}^{n} \frac{1}{k!} f ^ {(k)} (t) (x - t) ^ k
+  \]
+  It will soon become clear why we don't put $f(t)$ into the summation. We differentiate this form of $g$ using the product and chain rules:
+  \begin{align*}
+    g'(t) &= -f'(t) - \sum_{k = 1}^{n} \left[\frac{1}{k!} f ^ {(k + 1)} (t) (x - t) ^ k + \frac{1}{k!} f ^ {(k)} (t) \cdot k(x - t) ^ {k - 1} \cdot (-1)\right] \\
+    &= -f'(t) - \sum_{k = 1}^{n} \left[\frac{1}{k!} f ^ {(k + 1)} (t) (x - t) ^ k - \frac{1}{(k - 1)!} f ^ {(k)} (t) \cdot (x - t) ^ {k - 1} \right] \\
+  \end{align*}
+  Notice that the sum is telescoping, so only the first and last terms remain:
+  \begin{align*}
+    g'(t) &= -f'(t) - \left[\frac{1}{n!} f ^ {(n + 1)} (t) (x - t) ^ n - f'(t)\right] \\ 
+    &= -\frac{1}{n!} f ^ {(n + 1)} (t) (x - t) ^ n
+  \end{align*}
+  We have the precious $f ^ {(n + 1)}$ term. Remember we want to show that $g(c)$ is equal to the Lagrange form, but $g'(\xi)$ still needs some reworking. We force $g'(\xi)$ to take the required form:
+  \begin{align*}
+    g(c) &= \frac{1}{(n + 1)!} f ^ {(n + 1)} (\xi) (x - c) ^ {n + 1} \\ 
+    &= -\frac{1}{n + 1} \frac{(x - c) ^ {n + 1}}{(x - \xi) ^ n} g'(\xi) \\ 
+    \intertext{To avoid mess from integration by parts, we offload all the mess in front of $g'(\xi)$ to the $g(c)$ as it is a constant:}
+    g'(\xi) &= -\frac{(n + 1) (x - \xi) ^ n}{(x - c) ^ {n + 1}} g(c)
+  \end{align*}
+  We can apply Rolle's theorem here if we move everything to one side and set that to be the derivative of another function $h$.
+  \begin{align*}
+    h'(\xi) &= g'(\xi) + \frac{(n + 1) (x - \xi) ^ n}{(x - c) ^ {n + 1}} g(c) = 0 \\ 
+    \intertext{More generally, }
+    h'(t) &= g'(t) + \frac{(n + 1) (x - t) ^ n}{(x - c) ^ {n + 1}} g(c) \\ 
+    \intertext{Integrating both sides,}
+    h(t) &= g(t) - \left(\frac{x - t}{x - c}\right) ^ {n + 1} g(c)
+  \end{align*}
+  We can easily check that $h(x) = h(c) = 0$.
+\end{intuition}
+\begin{proof}
+  Fix $x, c \in (a, b)$. These will form the endpoints when we apply Rolle's theorem in due course. Define $g: (a, b) \to \R$ by
+  \[
+    g(t) = f(x) - f(t) - f'(t)(x - t) - \frac{1}{2!} f''(t) (x - t) ^ 2 - \cdots - \frac{1}{n!} f ^ {(n)} (t) (x - t) ^ n
+  \]
+  with derivative
+  \[
+    g'(t) = -\frac{1}{n!} f ^ {(n + 1)} (t) (x - t) ^ n
+  \]
+  Define $h: (a, b) \to \R$ by
+  \[
+    h(t) = g(t) - \left(\frac{x - t}{x - c}\right) ^ {n + 1} g(c)
+  \]
+  with derivative
+  \[
+    h'(t) = g'(t) + \frac{(n + 1) (x - t) ^ n}{(x - c) ^ {n + 1}} g(c)
+  \]
+  Then $h(x) = h(c) = 0$. By Rolle's theorem, there exist $\xi$ between $c$ and $x$ such that $h'(\xi) = 0$. Substituting this into the equalities above gives the desired reuslt.
+\end{proof}
+
+% ==================================================================================================
+
+\section{L'Hospital's rule}
+The following definition is taken from the \href{https://en.wikipedia.org/wiki/L%27H%C3%B4pital%27s_rule}{Wikipedia page} on L'Hospital's rule. The definition in our slides only cover the special case where $f$ and $g$ are continuously differentiable, which should be more than sufficient for any problem we will encounter as a Computing student; but for the sake of completeness, here is the full definition.
+\begin{definition}[L'Hospital's rule]
+  Suppose $f$ and $g$ are functions satisfying the following criteria:
+  \begin{itemize}
+    \item Either $\displaystyle \lim_{x \to c} f(x) = \lim_{x \to c} g(x) = 0$ or $\displaystyle \lim_{x \to c} \abs{f(x)} = \lim_{x \to c} \abs{g(x)} = \infty$
+    \item $f$ and $g$ are differentiable on an open interval $\mathcal{I}$ containing $c$, except possibly at $c$
+    \item $g'(x) \neq 0$ for all $x$ in $\mathcal{I}$ with $x \neq c$
+    \item $\displaystyle \lim_{x \to c} \frac{f'(x)}{g'(x)}$ exists
+  \end{itemize}
+  Then 
+  \[
+    \lim_{x \to c} \frac{f(x)}{g(x)} = \lim_{x \to c} \frac{f'(x)}{g'(x)}
+  \]
+\end{definition}
+Refer to the \href{https://en.wikipedia.org/wiki/L%27H%C3%B4pital%27s_rule}{Wikipedia page} for the proof. We will instead focus on applications of the rule.
+\begin{eg}
+  Evaluate
+  \[
+    \lim_{x \to \infty} \frac{e ^ x}{x ^ 2}
+  \]
+\end{eg}
+\begin{solution}
+  We apply l'Hospital's rule twice.
+  \begin{align*}
+    \lim_{x \to \infty} \frac{e ^ x}{x ^ 2} &= \lim_{x \to \infty} \frac{e ^ x}{2x} \\ 
+    &= \lim_{x \to \infty} \frac{e ^ x}{2} \\ 
+    &= \infty
+  \end{align*}
+\end{solution}
+\begin{eg}
+  Evaluate 
+  \[
+    \lim_{x \to 0 ^ +} x \ln x
+  \]
+\end{eg}
+\begin{solution}
+  This is the limit of the product of two terms: $x$ approaches 0 while $\ln x$ approaches $-\infty$. We need a division of two terms (i.e. a fraction) to apply l'Hospital's rule, so we convert one of them to 1 over its reciprocal. In this case we choose to convert $x$ to $1/(1/x)$ so that the limit is in the form $\infty / \infty$:
+  \begin{align*}
+    \lim_{x \to 0 ^ +} x \ln x &= \lim_{x \to 0 ^ +} \frac{\ln x}{\frac{1}{x}} \\ 
+    &= \lim_{x \to 0 ^ +} \frac{\frac{1}{x}}{-\frac{1}{x ^ 2}} \\ 
+    &= \lim_{x \to 0 ^ +} (-x) \\ 
+    &= 0
+  \end{align*}
+\end{solution}
+\begin{eg}
+  Evaluate
+  \[
+    \lim_{x \to -\infty} xe ^ x
+  \]
+\end{eg}
+\begin{solution}
+  Just like the previous example, the limit is in the indeterminate form $\infty \cdot 0$ (we ignore the sign of $\infty$). We try converting $x$ to $1/(1/x)$:
+  \begin{align*}
+    \lim_{x \to -\infty} xe ^ x &= \lim_{x \to -\infty} \frac{e ^ x}{\frac{1}{x}} \\ 
+    &= \lim_{x \to -\infty} \frac{e ^ x}{-\frac{1}{x ^ 2}} \\ 
+    &= \lim_{x \to -\infty} \frac{e ^ x}{\frac{2}{x ^ 3}} \\ 
+    &= \cdots
+  \end{align*}
+  We are a bit stuck here. We try converting $e ^ x$ to $1/(e ^ {-x})$ instead:
+  \begin{align*}
+    \lim_{x \to -\infty} xe ^ x &= \lim_{x \to -\infty} \frac{x}{e ^ {-x}} \\ 
+    &= \lim_{x \to -\infty} \frac{1}{-e ^ {-x}} \\ 
+    &= \lim_{x \to -\infty} -e ^ x \\ 
+    &= 0
+  \end{align*}
+  Sometimes, the choice of which term in the product to convert makes a difference.
+\end{solution}
+\begin{eg}
+  Evaluate
+  \[
+    \lim_{x \to \infty} \frac{e ^ x + e ^ {-x}}{e ^ x - e ^ {-x}}
+  \]
+\end{eg}
+\begin{solution}
+  If we try to apply l'Hospital's rule directly, we will run into a cycle:
+  \[
+    \lim_{x \to \infty} \frac{e ^ x + e ^ {-x}}{e ^ x - e ^ {-x}} = \lim_{x \to \infty} \frac{e ^ x - e ^ {-x}}{e ^ x + e ^ {-x}} = \lim_{x \to \infty} \frac{e ^ x + e ^ {-x}}{e ^ x - e ^ {-x}} = \cdots
+  \]
+  We must do some preprocessing before applying the rule.
+  \begin{align*}
+    \lim_{x \to \infty} \frac{e ^ x + e ^ {-x}}{e ^ x - e ^ {-x}} &= \lim_{x \to \infty} \frac{e ^ {2x} + 1}{e ^ {2x} - 1} \\ 
+    &= \lim_{x \to \infty} \frac{2e ^ {2x}}{2e ^ {2x}} \\ 
+    &= 1
+  \end{align*}
+\end{solution}
+\begin{eg}
+  Evaluate
+  \[
+    \lim_{x \to \infty} \frac{x ^ {1/2} + x ^ {-1/2}}{x ^ {1/2} - x ^ {-1/2}}
+  \]
+\end{eg}
+\begin{solution}
+  Like the previous example, we will run into issues if we apply l'Hospital's rule directly. Unlike the previous example, we will run into a neverending sequence of derivatives instead of a cycle:
+  \[
+    \lim_{x \to \infty} \frac{x ^ {1/2} + x ^ {-1/2}}{x ^ {1/2} - x ^ {-1/2}}
+    = \lim_{x \to \infty} \frac{\frac{1}{2}x ^ {-1/2} - \frac{1}{2}x ^ {-3/2}}{\frac{1}{2}x ^ {-1/2} + \frac{1}{2}x ^ {-3/2}}
+    = \lim_{x \to \infty} \frac{-\frac{1}{4}x ^ {-3/2} + \frac{3}{4}x ^ {-5/2}}{-\frac{1}{4}x ^ {-3/2} - \frac{3}{4}x ^ {-5/2}}
+    = \cdots
+  \]
+  We preprocess the expression similarly.
+  \begin{align*}
+    \lim_{x \to \infty} \frac{x ^ {1/2} + x ^ {-1/2}}{x ^ {1/2} - x ^ {-1/2}} &= \lim_{x \to \infty} \frac{x + 1}{x - 1} \\ 
+    &= \lim_{x \to \infty} \frac{1}{1} \\ 
+    &= 1
+  \end{align*}
+\end{solution}
+The following example concerns a limit in the indeterminate form $\infty ^ 0$. In general, limits in any indeterminate form involving exponentials ($1 ^ \infty$, $0 ^ \infty$, $0 ^ 0$) can be tackled in a similar way, so we will only do one example. 
+\begin{eg}
+  Evaluate
+  \[
+    \lim_{x \to \infty} x ^ {1/x}
+  \]
+\end{eg}
+\begin{solution}
+  When we see any weird exponentials in differentiation, the first thing that should come to mind is implicit differentiation and taking the log of both sides. This is exactly what we are going to do.
+  
+  Let
+  \[
+    y = x ^ {1/x} \quad \implies \quad \ln y = \frac{1}{x} \ln x = \frac{\ln x}{x}
+  \]
+  Then
+  \begin{align*}
+    \lim_{x \to \infty} \ln y &= \lim_{x \to \infty} \frac{\ln x}{x} \\ 
+    &= \lim_{x \to \infty} \frac{\frac{1}{x}}{1} \\ 
+    &= 0
+  \end{align*}
+  Observe that
+  \[
+    y = e ^ {\ln y}
+  \]
+  So
+  \begin{align*}
+    \lim_{x \to \infty} y &= \lim_{x \to \infty} e ^ {\ln y} \\ 
+    &= \displaystyle e ^ {\left(\lim_{x \to \infty} \ln y\right)} \\ 
+    &= e ^ 0 \\ 
+    &= 1
+  \end{align*}
+\end{solution}
