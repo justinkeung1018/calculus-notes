@@ -218,14 +218,16 @@ Also, it is very painful that we do not introduce the absolute value version (i.
     \item $\int_N^\infty\! f(x) \di x$ diverges, then $\sumto{n}{\infty} a_n$ diverges.
   \end{itemize}
 \end{test}
+\begin{figure}[!htbp]
+  \centering
+  \includegraphics[width=0.6\columnwidth]{week_06_upper}
+  \caption{Upper Riemann approximation of $\frac{1}{n}$}
+  \label{fig:week_06_upper}
+\end{figure}
 \begin{eg}
   We consider the upper Riemann approximation to show that $\sumto{n}{\infty} \frac{1}{n}$ diverges.
-  \begin{figure}[!htbp]
-    \centering
-    \includegraphics[width=0.6\columnwidth]{week_06_upper}
-    \caption{Upper Riemann approximation of $\frac{1}{n}$}
-  \end{figure}
-  It is clear from the diagram that $\sumto{n}{\infty} \frac{1}{n} > \int_1^{\infty} \frac{1}{n}$. Then,
+  
+  It is clear from \Cref{fig:week_06_upper} that $\sumto{n}{\infty} \frac{1}{n} > \int_1^{\infty} \frac{1}{n}$. Then,
   \begin{align*}
     \int_1^{\infty}\! \frac{1}{x} \di x &= \lim_{b \to \infty} [\ln x]_1^b \\ 
     &= \lim_{b \to \infty} [\ln b - \ln 1] \\ 
@@ -233,14 +235,16 @@ Also, it is very painful that we do not introduce the absolute value version (i.
   \end{align*}
   which diverges since $\ln x$ is strictly increasing and not bounded above. So $\sumto{n}{\infty} \frac{1}{n}$ also diverges.
 \end{eg}
+\begin{figure}[!htbp]
+  \centering
+  \includegraphics[width=0.6\columnwidth]{week_06_lower}
+  \caption{Lower Riemann approximation of $\frac{1}{n ^ 2}$}
+  \label{fig:week_06_lower}
+\end{figure}
 \begin{eg}
   We consider the lower Riemann approximation to show that $\sum_{n = 2}^\infty \frac{1}{n ^ 2}$ converges (note that we are summing from 2, not 1).
-  \begin{figure}[!htbp]
-    \centering
-    \includegraphics[width=0.6\columnwidth]{week_06_lower}
-    \caption{Lower Riemann approximation of $\frac{1}{n ^ 2}$}
-  \end{figure}
-  It is clear from the diagram that $\sum_{n = 2}^\infty \frac{1}{n} < \int_1^{\infty} \frac{1}{n ^ 2}$. Then,
+  
+  It is clear from \Cref{fig:week_06_lower} that $\sum_{n = 2}^\infty \frac{1}{n} < \int_1^{\infty} \frac{1}{n ^ 2}$. Then,
   \begin{align*}
     \int_1^{\infty}\! \frac{1}{x ^ 2} \di x &= \lim_{b \to \infty} \left[-\frac{1}{x}\right]_1^b \\ 
     &= \lim_{b \to \infty} (-\frac{1}{b} + \frac{1}{1}) \\ 
