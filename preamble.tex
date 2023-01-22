@@ -17,12 +17,16 @@
 \usepackage{emptypage}
 \usepackage{subcaption}
 \usepackage{multicol}
-\usepackage{tabularray}
-\UseTblrLibrary{booktabs}
 \usepackage[usenames,dvipsnames]{xcolor}
 
 % Other font I sometimes use.
 % \usepackage{cmbright}
+
+% Tables
+\usepackage{tabularray}
+\usepackage{tabularx}
+\UseTblrLibrary{booktabs}
+\newcommand{\ra}[1]{\renewcommand{\arraystretch}{#1}}
 
 % Math stuff
 \usepackage{amsmath, amsfonts, mathtools, amsthm, amssymb}
@@ -201,24 +205,24 @@
 \declaretheorem[style=thmblueline, numbered=no, name=Note]{note}
 \declaretheorem[numbered=no, style=thmexplanationbox, name=Template]{template}
 \declaretheorem[numbered=no, style=thmlightbluebox, name=Solution]{solution}
+\declaretheorem[numbered=no, style=thmlightbluebox, name=Intuition]{intuition}
 
 \renewenvironment{proof}[1][\proofname]{\begin{replacementproof}}{\end{replacementproof}}
 
 % \AtEndEnvironment{eg}{\null\hfill$\diamond$}%
-\newmdtheoremenv[nobreak=true]{result}{Result}
-\newmdtheoremenv[nobreak=true]{postulate}{Postulate}
-\newmdtheoremenv{conclusion}{Conclusion}
-\newtheorem*{observation}{Observation}
-\newtheorem*{terminology}{Terminology}
-\newtheorem*{application}{Application}
-\newtheorem*{question}{Question}
+% \newmdtheoremenv[nobreak=true]{result}{Result}
+% \newmdtheoremenv[nobreak=true]{postulate}{Postulate}
+% \newmdtheoremenv{conclusion}{Conclusion}
+% \newtheorem*{observation}{Observation}
+% \newtheorem*{terminology}{Terminology}
+% \newtheorem*{application}{Application}
+% \newtheorem*{question}{Question}
 
 \newtheorem*{notation}{Notation}
-\newtheorem*{previouslyseen}{As previously seen}
-\newtheorem*{problem}{Problem}
-\newtheorem*{observe}{Observe}
-\newtheorem*{property}{Property}
-\newtheorem*{intuition}{Intuition}
+% \newtheorem*{previouslyseen}{As previously seen}
+% \newtheorem*{problem}{Problem}
+% \newtheorem*{observe}{Observe}
+% \newtheorem*{property}{Property}
 
 % End example and intermezzo environments with a small diamond (just like proof
 % environments end with a small square)
