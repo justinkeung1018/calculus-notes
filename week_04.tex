@@ -1,0 +1,603 @@
+\chapter{Integration}
+In this chapter, we will introduce the Darboux and Riemann integrals and prove their equivalence. In both definitions of the integral, we consider the \textit{limit} of the sum of the areas of (finitely many) rectangles under (or above) the curve. The notion of \textit{limit} and how we calculate the area of each rectangle differentiate these two definitions.
+
+% ==================================================================================================
+
+\section{Partitions}
+\begin{definition}[Partition]
+  A partition $P$ of $[a, b]$ is given by a finite set of endpoints
+  \[
+    a = x_0 < x_1 < x_2 < \cdots < x_n = b
+  \]
+  By abuse of notation, we either denote $P$ by its endpoints
+  \[
+    P = \{x_0, x_1, \ldots, x_n \}
+  \]
+  or by its subintervals
+  \[
+    P = \{I_0, I_1, \ldots, I_{n - 1}\}
+  \]
+  where $I_k = [x_k, x_{k + 1}]$. Observe that there are $n + 1$ endpoints but $n$ intervals.
+\end{definition}
+The endpoints do not have to be evenly distributed across the interval. Therefore, we define the notion of \textit{mesh}:
+\begin{definition}[Mesh]
+  The mesh of a partition $P$ is the width of the widest subinterval in $P$, that is,
+  \[
+    \norm{P} = \max\{x_{i + 1} - x_i, \; i \in [0, n - 1]\}
+  \]
+\end{definition}
+Another often useful notion is \textit{refinement}:
+\begin{definition}[Refinement]
+  Given two partitions $P$ and $Q$ of $[a, b]$, we say that $Q$ refines $P$, or $Q$ is a refinement of $P$, if $P \subseteq Q$.
+\end{definition}
+\begin{remark}
+  Several notes on refinements:
+  \begin{itemize}
+    \item Any partition is a refinement of itself.
+    \item $\norm{Q} \leq \norm{P}$ does not imply $Q$ refines $P$. For $Q$ to refine $P$, we demand that $Q$ contains all of the endpoints in $P$, and possibly some more. Consider the following partitions of $[0, 6]$:
+    \begin{align*}
+      P &= \{0, 3, 6\} \\
+      Q &= \{0, 2, 4, 6\}
+    \end{align*}
+    Even though $Q$ is intuitively the "finer" partition ($\norm{Q} = 2$ but $\norm{P} = 3$), $Q$ does not refine $P$ as $3 \in P$ but $3 \notin Q$.
+  \end{itemize}
+\end{remark}
+
+% ==================================================================================================
+
+\section{Darboux integral}
+
+% --------------------------------------------------------------------------------------------------
+
+\subsection{Lower, upper darboux sums}
+Before we define the notion of lower and upper Darboux sums, we shall introduce two synonyms for ease of reading. Given a partition
+\[
+  P = \{x_0, x_1, \ldots, x_n\}
+\]
+and a bounded function $f: [a, b] \to \R$, let
+\begin{align*}
+  M_i &= \sup_{x \in [x_i, x_{i + 1}]} f(x) \\ 
+  m_i &= \inf_{x \in [x_i, x_{i + 1}]} f(x)
+\end{align*}
+or equivalently, by our abuse of notation,
+\begin{align*}
+  M_i &= \sup_{x \in I_i} f(x) \\ 
+  m_i &= \inf_{x \in I_i} f(x)
+\end{align*}
+Other literature may define them by taking the supremum or infimum over $[x_{i - 1}, x_i]$ instead, so pay attention to the given definitions to avoid off-by-one errors. Using these synonyms, we now define lower and upper Darboux sums.
+\begin{definition}[Lower and upper Darboux sum]
+  Let $f: [a, b] \to \R$ be a bounded function. Given a partition $P$ of $[a, b]$, the lower Darboux sum of $f$ with respect to $P$ is
+  \[
+    L(f, P) = \sum_{i = 0}^{n - 1} m_i (x_{i + 1} - x_i)
+  \]
+  and the upper Darboux sum of $f$ with respect to $P$ is
+  \[
+    U(f, P) = \sum_{i = 0}^{n - 1} M_i (x_{i + 1} - x_i)
+  \]
+  We may often omit Darboux and simply say the \textit{lower sum} or the \textit{upper sum}, as these definitions are equivalent to lower and upper Riemann sums, which will be introduced in the next section.
+\end{definition}
+We will derive several important properties involving lower and upper sums, partitions, and refinements. We will assume that $f: [a, b] \to \R$ is bounded.
+\begin{prop}
+  \label{prop:lower-upper-sum-trivial}
+  For any partition $P$ of $[a, b]$,
+  \[
+    L(f, P) \leq U(f, P)
+  \]
+\end{prop}
+\begin{proof}
+  By definition, for any $x \in I_i$,
+  \[
+    m_i \leq f(x) \leq M_i 
+  \]
+  so for every $i \in [0, n - 1]$,
+  \[
+    m_i \leq M_i
+  \]
+  and the result follows by definition of $L(f, P)$ and $U(f, P)$.
+\end{proof}
+\begin{prop}
+  \label{prop:lower-upper-sum-refinement}
+  Let $P$ and $Q$ be partitions of $[a, b]$, and suppose $Q$ refines $P$. Then 
+  \begin{align*}
+    L(f, P) \leq L(f, Q) \\
+    U(f, P) \geq U(f, Q)
+  \end{align*}
+\end{prop}
+\begin{proof}
+  The case where $P = Q$ is trivial. Suppose $Q$ has one more endpoint $x_j$ than $P$. (Since $Q$ refines $P$, $Q$ must contain all endpoints of $P$, and possibly some more.) Let $x_j \in [x_k, x_{k + 1}]$ for some $k \in [0, n - 1]$. (Since $Q$ is a partition of $[a, b]$, $x_j \in [a, b]$.) Then the lower and upper sums differ at the term on the interval $[x_k, x_{k + 1}]$. Observe that
+  \begin{align*}
+    m_k (x_{k + 1} - x_k) &= m_k (x_{k + 1} - x_j) + m_k (x_j - x_k) \\
+    &\leq \inf_{x \in [x_j, x_{k + 1}]} f(x) (x_{k + 1} - x_j) + \inf_{x \in [x_k, x_j]} f(x) (x_j - x_k)
+  \end{align*}
+  Intuitively, the infimum may fall into the left half $([x_k, x_j])$ or the right half $([x_j, x_{k + 1}])$ of the interval. When we split the interval into two, the infimum on either half may take a larger value, since the original infimum no longer belongs to this half. Of course, the original infimum may be attained on the common endpoint of the two halves, i.e. $x_j$, in which case the new infima are unchanged. Similarly, we have
+  \begin{align*}
+    M_k (x_{k + 1} - x_k) &= M_k (x_{k + 1} - x_j) + M_k (x_j - x_k) \\
+    &\geq \sup_{x \in [x_j, x_{k + 1}]} f(x) (x_{k + 1} - x_j) + \sup_{x \in [x_k, x_j]} f(x) (x_j - x_k)
+  \end{align*}
+  Therefore,
+  \begin{align*}
+    L(f, P) &= \sum_{i = 0}^{n - 1} m_i (x_{i + 1} - x_i) \\
+    &= \sum_{i = 0}^{k - 1} m_i (x_{i + 1} - x_i) + m_k (x_{k + 1} - x_k) + \sum_{i = k + 1}^{n - 1} m_i (x_{i + 1} - x_i) \\ 
+    &= \sum_{i = 0}^{k - 1} m_i (x_{i + 1} - x_i) + m_k (x_{k + 1} - x_j) + m_k (x_j - x_k) + \sum_{i = k + 1}^{n - 1} m_i (x_{i + 1} - x_i) \\ 
+    &\leq \sum_{i = 0}^{k - 1} m_i (x_{i + 1} - x_i) + \inf_{x \in [x_j, x_{k + 1}]} f(x) (x_{k + 1} - x_j) + \inf_{x \in [x_k, x_j]} f(x) (x_j - x_k) + \sum_{i = k + 1}^{n - 1} m_i (x_{i + 1} - x_i) \\ 
+    &= L(f, Q)
+  \end{align*}
+  and the inequality for the upper sum follows exactly the same way. If $Q$ has $n$ more endpoints than $P$, we add one endpoint at a time to get
+  \[
+    P \subseteq P_1 \subseteq P_2 \subseteq \ldots \subseteq P_n = Q
+  \]
+  where $P_m$ has $m$ more endpoints than $P$. Then the inequality follows:
+  \begin{align*}
+    L(f, P) \leq L(f, P_1) \leq \ldots \leq L(f, P_n) = L(f, Q) \\ 
+    U(f, P) \leq U(f, P_1) \leq \ldots \leq U(f, P_n) = U(f, Q)
+  \end{align*}
+\end{proof}
+We can interpret the result above intuitively. 
+\begin{intuition}
+  The lower sum should be strictly less than the area under the curve, while the upper sum should be strictly greater than the area under the curve. When we refine the partition, the lower and upper sums should both get closer and closer to the true area. Therefore, the lower sums should form a monotonically increasing (non-decreasing) sequence, while the upper sums should form a monotonically decreasing (non-increasing) sequence, as the partitions get finer and finer.
+\end{intuition}
+In fact, we can generalise \Cref{prop:lower-upper-sum-trivial} using \Cref{prop:lower-upper-sum-refinement}.
+\begin{prop}
+  \label{prop:lower-upper-sum-general}
+  For any partition $P$ and $Q$ of $[a, b]$,
+  \[
+    L(f, P) \leq U(f, Q)
+  \]
+\end{prop}
+\begin{proof}
+  Observe that $P \cup Q$ is a common refinement of $P$ and $Q$. In other words, $P \cup Q$ refines both $P$ and $Q$. By \Cref{prop:lower-upper-sum-trivial} and \Cref{prop:lower-upper-sum-refinement},
+  \[
+    L(f, P) \leq L(f, P \cup Q) \leq U(f, P \cup Q) \leq U(f, Q)
+  \]
+\end{proof}
+
+% --------------------------------------------------------------------------------------------------
+
+\subsection{Definition of the integral}
+The lower and upper Darboux integrals formalise the notion of the \textit{limit} of lower and upper Darboux sums, which stems from the intuition that lower sums form an increasing sequence and upper sums form a decreasing sequence. 
+\begin{definition}[Lower and upper Darboux integral]
+  The lower integral is given by
+  \[
+    L(f) = \sup\{L(f, P): P \text{ is a partition of } [a, b]\}
+  \]
+  and the upper integral is given by
+  \[
+    U(f) = \inf\{U(f, P): P \text{ is a partition of } [a, b]\}
+  \]
+  In some literature, we draw a bar below or above the definite integral to denote the lower or upper integral:
+  \[
+    \lowerint{a}{b} f(x) \! \di x = L(f) \qquad \text{and} \qquad \upperint{a}{b} f(x) \! \di x = U(f)
+  \]
+\end{definition}
+Before we define the Darboux integral, we prove one property of lower and upper integrals. This requires the following lemma:
+\begin{lemma}
+  Let $f, g: [a, b] \to \R$ be functions. If $f(x) \leq g(y)$ for every $x, y \in [a, b]$, then $\sup f \leq \inf g$.
+\end{lemma}
+Note that the condition is different from saying $f \leq g$, i.e. $f(x) \leq g(x)$ for every $x \in [a, b]$, which does not imply the result in general.
+\begin{proof}
+  Fix $\epsilon > 0$. By definition of supremum and infimum, there exists $x, y \in [a, b]$ such that
+  \[
+    \sup f - \frac{\epsilon}{2} < f(x) < \sup f \qquad \text{and} \qquad \inf g < g(y) < \inf g + \frac{\epsilon}{2}
+  \]
+  Since $f(x) \leq g(y)$, it follows that
+  \[
+    \sup f - \frac{\epsilon}{2} < f(x) \leq g(y) < \inf g + \frac{\epsilon}{2}
+  \]
+  and therefore,
+  \begin{align*}
+    \sup f < \inf g + \epsilon
+  \end{align*}
+  Since this holds for any $\epsilon > 0$, we have $\sup f \leq \inf g$. (We cannot conclude that $\sup f < \inf g$ since it may be the case that $f = g$ and the inequality will still hold.)
+\end{proof}
+\begin{prop}
+  $L(f) \leq U(f)$.
+  \label{prop:lower-upper-darboux-integral}
+\end{prop}
+\begin{proof}
+  From \Cref{prop:lower-upper-sum-general}, we know that $L(f, P) \leq U(f, Q)$ for any partition $P$ and $Q$ of $[a, b]$. By lemma and definition of lower and upper integrals, the result follows.
+\end{proof}
+\begin{definition}[Darboux integral]
+  A function $f: [a, b] \to \R$ is Darboux integrable if and only if it is bounded and $L(f) = U(f)$ and the common value is called the Darboux integral:
+  \[
+    \int_a^b f(x) \! \di x = L(f) = U(f)
+  \]
+  If $f$ is not bounded, then either the lower or upper Darboux sums (or both) will be unbounded, so $f$ will not be Darboux integrable.
+\end{definition}
+
+% --------------------------------------------------------------------------------------------------
+
+\subsection{Cauchy criterion}
+Instead of using the definition of the Darboux integral, it is sometimes more convenient to use the Cauchy criterion to show that a function is Darboux integrable. We show their equivalence:
+\begin{definition}[Cauchy criterion]
+  A function $f: [a, b] \to \R$ is Darboux integrable if and only if for every $\epsilon > 0$, there exists a partition $P$ of $[a, b]$ such that
+  \[
+    U(f, P) - L(f, P) < \epsilon
+  \]
+\end{definition}
+\begin{proof}
+  \textbf{Only if.} Suppose a function $f$ is Darboux integrable. Then by definition,
+  \[
+    U(f) = L(f) \qquad \iff \qquad \inf\{U(f, P)\} = \sup\{L(f, P)\}
+  \]
+  Fix $\epsilon > 0$. By definition of infimum and supremum, there exists partitions $P$ and $Q$ such that
+  \[
+    U(f) < U(f, P) < U(f) + \frac{\epsilon}{2} \qquad \text{and} \qquad L(f) - \frac{\epsilon}{2} < L(f, Q) < L(f)
+  \]
+  Consider $P \cup Q$. It follows from \Cref{prop:lower-upper-sum-refinement} that
+  \begin{align*}
+    U(f, P \cup Q) < U(f, P) < U(f) + \frac{\epsilon}{2} \\ 
+    L(f, P \cup Q) > L(f, Q) > L(f) - \frac{\epsilon}{2}
+  \end{align*}
+  Since $L(f, P \cup Q) \leq U(f, P \cup Q)$, it follows that
+  \begin{align*}
+    \begin{aligned}
+      U(f, P \cup Q) - L(f, P \cup Q) &< U(f) + \frac{\epsilon}{2} - L(f) + \frac{\epsilon}{2} \\ 
+      &= U(f) - L(f) + \epsilon \\ 
+      &= \epsilon && \text{since U(f) = L(f)}
+    \end{aligned}
+  \end{align*}
+
+  \textbf{If.} Fix $\epsilon > 0$. Then there exists a partition $P$ such that
+  \[
+    U(f, P) - L(f, P) < \epsilon
+  \]
+  By definition, we know that
+  \[
+    U(f) \leq U(f, P) \qquad \text{and} \qquad L(f) \geq L(f, P)
+  \]
+  so
+  \[
+    U(f) - L(f) \leq U(f, P) - L(f, P) < \epsilon
+  \]
+  From \Cref{prop:lower-upper-darboux-integral}, we also know that 
+  \[
+    L(f) \leq U(f) \qquad \iff \qquad U(f) - L(f) \geq 0
+  \]
+  Combining these inequalities gives
+  \[
+    0 \leq U(f) - L(f) < \epsilon
+  \]
+  This holds for any $\epsilon > 0$, so it follows that $U(f) = L(f)$.
+\end{proof}
+The following example illustrates how the Cauchy criterion can be easier to use than the definition of the Darboux integral.
+\begin{prop}
+  All continuous functions are Darboux integrable.
+\end{prop}
+\begin{proof}
+  Take any continuous function $f: [a, b] \to \R$. Then $f$ is uniformly continuous. So we have
+  \[
+    \forall \epsilon > 0, \; \exists \delta > 0: \forall x, y \in [a, b], \; \abs{x - y} < \delta \implies \abs{f(x) - f(y)} < \frac{\epsilon}{b - a}
+  \]
+  Take any partition $P$ of $[a, b]$ such that $\norm{P} < \delta$. (Such a partition always exists since we can always subdivide $[a, b]$ into, say, roughly $(b - a) / \delta$ equal subintervals.) Then the distance between any two points in any interval will be less than $\delta$. In particular, consider the subinterval $[x_i, x_{i + 1}]$ for some $i$, and suppose $f$ attains its maximum and minimum on $[x_i, x_{i + 1}]$ at points $c$ and $d$ respectively. Since $\abs{c - d} < \delta$, it follows that 
+  \[
+    \abs{M_i - m_i} < \frac{\epsilon}{b - a}
+  \]
+  Observe that $M_i \geq m_i$, so $\abs{M_i - m_i} = M_i - m_i$. Therefore,
+  \begin{align*}
+    U(f, P) - L(f, P) &= \sum M_i (x_{i + 1} - x_i) + \sum m_i (x_{i + 1} - x_i) \\ 
+    &= \sum (M_i - m_i) (x_{i + 1} - x_i) \\ 
+    &< \frac{\epsilon}{b - a} (x_{i + 1} - x_{i}) \\ 
+    &= \frac{\epsilon}{b - a} \cdot (b - a) \\ 
+    &= \epsilon
+  \end{align*}
+\end{proof}
+
+% ==================================================================================================
+
+\section{Riemann integral}
+
+% --------------------------------------------------------------------------------------------------
+
+\subsection{Tagged partition}
+When we evaluate Darboux sums, we take the maximum and minimum values on each subinterval without caring where the maximum and minimum are attained. With Riemann sums, however, we specify at which point on each subinterval the function should be evaluated. These points are the \textit{tags} associated with the partition. Formally,
+\begin{definition}
+  A tagged partition $(P, C)$ of $[a, b]$ is a partition
+  \[
+    P = \{I_0, I_1, \ldots, I_{n - 1}\}
+  \]
+  together with a set of tags
+  \[
+    C = \{c_0, c_1, \ldots, c_{n - 1}\}
+  \]
+  such that $c_k \in I_k$ for every $k \in [0, n - 1]$.
+\end{definition}
+
+% --------------------------------------------------------------------------------------------------
+
+\subsection{Riemann sum}
+The Riemann sum is defined similarly to the Darboux sums.
+\begin{definition}[Riemann sum]
+  The Riemann sum of a function $f: [a, b] \to \R$ with respect to the tagged partition $(P, C)$ is defined by
+  \[
+    S(f, P, C) = \sum_{i = 0}^{n - 1} f(c_i) (x_{i + 1} - x_i)
+  \]
+\end{definition}
+Clearly, we may choose the tags such that the function attains its maximum, minimum, or somewhere in between on each subinterval. Therefore,
+\[
+  L(f, P) \leq S(f, P, C) \leq U(f, P)
+\]
+
+% --------------------------------------------------------------------------------------------------
+
+\subsection{Riemann integral}
+The reason why we don't see this definition as frequently, or why many people define the Riemann integral using the definition of the Darboux integral, is because Darboux and Riemann integrals are equivalent, and that the Darboux integral is arguably easier to use. 
+\begin{definition}
+  A function $f: [a, b] \to \R$ is Riemann integrable if there exists $R \in \R$ such that for every $\epsilon > 0$, there exists $\delta > 0$ such that for every partition $P$ with $\norm{P} < \delta$, 
+  \[
+    \abs{S(f, P, C) - R} < \epsilon
+  \]
+  If such $R$ exists, $R$ is the Riemann integral of $f$.
+\end{definition}
+\begin{prop}
+  A function is Darboux integrable if and only if it is Riemann integrable.
+\end{prop}
+There will be a lot of seemingly convoluted choices of $\epsilon$ in the following proof. We will first sketch out the proof below simply using $\epsilon$ in any definition we encounter, and then backtrack to find cleaner versions of $\epsilon$.
+\begin{proof}
+  \textbf{Riemann implies Darboux.} Fix $\epsilon > 0$. Let $P$ be a partition of $[a, b]$ that satisfies
+  \[
+    \abs{S(f, P, C) - R} < \epsilon
+  \]
+  for every set of tags $C$. We apply the definition of absolute value bars to get
+  \begin{equation}
+    \label{eqn:riemann-implies-darboux-def}
+    R - \epsilon < S(f, P, C) < R + \epsilon 
+  \end{equation}
+  We want to 1) make use of the chosen $\epsilon$ and 2) relate $S(f, P, C)$ to $U(f, P)$ and $L(f, P)$. Applying the definitions of supremum and infimum achieves both goals. 
+  
+  We first consider $U(f, P)$. By definition of supremum, there exists a set of tags $C_1$ such that for every $k \in [0, n - 1]$
+  \[
+    M_k - \epsilon < f(c_k) < M_k
+  \]
+  Therefore,
+  \begin{align*}
+    S(f, P, C_1) &= \sum_{k = 0}^{n - 1} f(c_k) (x_{k + 1} - x_k) \\ 
+    &> \sum_{k = 0}^{n - 1} (M_k - \epsilon) (x_{k + 1} - x_k) \\ 
+    &= \sum_{k = 0}^{n - 1} M_k (x_{k + 1} - x_k) - \sum_{k = 0}^{n - 1} \epsilon (x_{k + 1} - x_k) \\ 
+    &= U(f, P) - \epsilon (b - a) \numberthis \label{eqn:riemann-implies-darboux-upper-1}
+  \end{align*}
+
+  Similarly for $L(f, P)$, by definition of infimum, there exists a set of tags $C_2$ such that for every $k \in [0, n - 1]$,
+  \[
+    m_k < f(c_k) < m_k + \epsilon
+  \]
+  Therefore,
+  \begin{align*}
+    S(f, P, C_2) &= \sum_{k = 0}^{n - 1} f(c_k) (x_{k + 1} - x_k) \\ 
+    &< \sum_{k = 0}^{n - 1} (m_k + \epsilon) (x_{k + 1} - x_k) \\ 
+    &= \sum_{k = 0}^{n - 1} m_k (x_{k + 1} - x_k) + \sum_{k = 0}^{n - 1} \epsilon (x_{k + 1} - x_k) \\ 
+    &= L(f, P) + \epsilon (b - a) \numberthis \label{eqn:riemann-implies-darboux-lower-1}
+  \end{align*}
+  
+  However, since $C_1$ and $C_2$ may not necessarily be equal, we need some way to relate \Cref{eqn:riemann-implies-darboux-upper-1} and \Cref{eqn:riemann-implies-darboux-lower-1}. We apply \Cref{eqn:riemann-implies-darboux-def} to get
+  \begin{align*}
+    R + \epsilon > U(f, P) - \epsilon (b - a) \\ 
+    R - \epsilon < L(f, P) + \epsilon (b - a)
+  \end{align*}
+  and a little bit of rearranging gives
+  \begin{align}
+    R + \epsilon + \epsilon (b - a) > U(f, P) \label{eqn:riemann-implies-darboux-upper-2} \\ 
+    R - \epsilon - \epsilon (b - a) < L(f, P) \label{eqn:riemann-implies-darboux-lower-2}
+  \end{align}
+
+  Recall that our choice of $P$ depends on $\epsilon$, so we cannot generalise this to all $\epsilon > 0$ yet. But then
+  \[
+    U(f, P) \geq U(f) \qquad \text{and} \qquad L(f, P) \leq L(f)
+  \]
+  for every partition $P$. Substituting into \Cref{eqn:riemann-implies-darboux-upper-2} and \Cref{eqn:riemann-implies-darboux-lower-2} gives
+  \begin{align*}
+    R + \underbrace{\epsilon}_{\epsilon / 2} + \underbrace{\epsilon (b - a)}_{\epsilon / 2} > U(f) \\ 
+    R - \epsilon - \epsilon (b - a) < L(f)
+  \end{align*}
+  Since this holds for every $\epsilon > 0$, we have
+  \[
+    R \geq U(f) \qquad \text{and} \qquad R \leq L(f)
+  \]
+  so it follows that $U(f) \leq L(f)$. But then $L(f) \leq U(f)$ by \Cref{prop:lower-upper-darboux-integral}. So $L(f) = U(f) = R$.
+
+  \textbf{Darboux implies Riemann.} Fix $\epsilon > 0$. Since $f$ is Darboux integrable:
+  \begin{itemize}
+    \item By the Cauchy criterion, there exists a partition $Q$ of $[a, b]$ such that
+      \begin{equation}
+        U(f, Q) - L(f, Q) < \epsilon \label{eqn:darboux-implies-riemann-cauchy}
+      \end{equation}
+    \item $f$ is bounded, say $\abs{f} \leq M$.
+  \end{itemize}
+  Let $P$ be a partition of $[a, b]$, and suppose $\norm{P} < \delta$ for some $\delta > 0$ which we will find later. Suppose $Q$ consists of $m$ subintervals, and therefore $m + 1$ endpoints. Since $a$ and $b$ are common to both $P$ and $Q$, there are at most $m - 1$ endpoints in $Q$ that are not in $P$. So there are at most $m - 1$ subintervals in $P$ which contain these endpoints (that are in $Q$ but not in $P$). 
+  
+  Consider $P' = P \cup Q$. Suppose $I_k$ is a subinterval in $P$ which contains at least one endpoint in $Q$ not in $P$. Then the terms corresponding to $I_k$ in $U(f, P')$ and $U(f, P)$ differ by at most $2M \abs{I_k}$. 
+
+  (Some remarks here:
+  \begin{itemize}
+    \item \textit{Corresponding} here means the terms that \textit{span} $I_k$. Since $P'$ contains all the subintervals in $P$, and definitely some more, since it includes endpoints in $Q$ not in $P$, the term in $U(f, P')$ \textit{corresponding} to $I_k$ might be
+    \[
+      M_j \abs{I_j} + M_{j + 1} \abs{I_{j + 1}} + \cdots + M_{j'} \abs{I_{j'}}
+    \]
+    where $I_j \cup I_{j + 1} \cup \ldots \cup I_{j'} = I_k$.
+    \item $-M \leq f \leq M$, hence the difference $2M \abs{I_k}$.)
+  \end{itemize}
+  
+  There are at most $m - 1$ of these differing terms. Also, we have assumed that $\norm{P} < \delta$, so any of these differing subintervals satisfy $\abs{I_k} < \delta$. It follows that
+  \[
+    U(f, P) - U(f, P') \leq 2(m - 1)M\delta
+  \]
+  By exactly the same reasoning,
+  \[
+    L(f, P') - L(f, P) \leq 2(m - 1)M\delta
+  \]
+  (Notice the $P$ and $P'$ swapping positions in the two inequalities. This is because $U(f, P) \geq U(f, P')$ but $L(f, P) \leq L(f, P')$.)
+
+  Now that we have related the sums with $\delta$, what about $\epsilon$? The only place where we have encountered $\epsilon$ so far is \Cref{eqn:darboux-implies-riemann-cauchy}. This means we have to relate these inequalities to $U(f, Q)$ and $L(f, Q)$. This isn't too hard: since $P'$ refines $Q$,
+  \[
+    U(f, Q) \geq U(f, P') \qquad \text{and} \qquad L(f, Q) \leq L(f, P')
+  \]
+  A little bit of rearranging gives
+  \begin{align*}
+    U(f, P) \leq U(f, Q) + 2(m - 1)M\delta \\
+    L(f, P) \geq L(f, Q) - 2(m - 1)M\delta 
+  \end{align*}
+  Hence,
+  \[
+    U(f, P) - L(f, P) \leq \underbrace{U(f, Q) - L(f, Q)}_{\text{e.g. $\epsilon / 4$}} + \underbrace{4(m - 1)M\delta}_{\text{e.g. $\epsilon / 2$}} \leq \frac{3\epsilon}{4} < \epsilon \\ 
+  \]
+  Observe that
+  \[
+    L(f, P) \leq S(f, P, C) \leq U(f, P)
+  \]
+  for any tagged partition $(P, C)$. So
+  \[
+    \abs{S(f, P, C) - D} < \epsilon
+  \]
+  for every tagged partition $(P, C)$ with $\norm{P} < \delta$, where
+  \[
+    \delta = \frac{\epsilon}{8(m - 1)M}
+  \]
+\end{proof}
+Here is the same proof after cleaning up the $\epsilon$ values and less verbose.
+\begin{proof}
+  \textbf{Riemann implies Darboux.} Fix $\epsilon > 0$. Let $P$ be a partition of $[a, b]$ that satisfies
+  \[
+    \abs{S(f, P, C) - R} < \epsilon
+  \]
+  for every set of tags $C$. We apply the definition of absolute value bars to get
+  \begin{equation}
+    \label{eqn:riemann-implies-darboux-def-cleaned}
+    R - \frac{\epsilon}{2} < S(f, P, C) < R + \frac{\epsilon}{2}
+  \end{equation}
+  We want to 1) make use of the chosen $\epsilon$ and 2) relate $S(f, P, C)$ to $U(f, P)$ and $L(f, P)$. Applying the definitions of supremum and infimum achieves both goals. 
+  
+  We first consider $U(f, P)$. By definition of supremum, there exists a set of tags $C_1$ such that for every $k \in [0, n - 1]$
+  \[
+    M_k - \frac{\epsilon}{2(b - a)} < f(c_k) < M_k
+  \]
+  Therefore,
+  \begin{align*}
+    S(f, P, C_1) &= \sum_{k = 0}^{n - 1} f(c_k) (x_{k + 1} - x_k) \\ 
+    &> \sum_{k = 0}^{n - 1} (M_k - \epsilon) (x_{k + 1} - x_k) \\ 
+    &= \sum_{k = 0}^{n - 1} M_k (x_{k + 1} - x_k) - \sum_{k = 0}^{n - 1} \epsilon (x_{k + 1} - x_k) \\ 
+    &= U(f, P) - \epsilon (b - a) \numberthis \label{eqn:riemann-implies-darboux-upper-1-cleaned}
+  \end{align*}
+
+  Similarly for $L(f, P)$, by definition of infimum, there exists a set of tags $C_2$ such that for every $k \in [0, n - 1]$,
+  \[
+    m_k < f(c_k) < m_k + \frac{\epsilon}{2(b - a)}
+  \]
+  Therefore,
+  \begin{align*}
+    S(f, P, C_2) &= \sum_{k = 0}^{n - 1} f(c_k) (x_{k + 1} - x_k) \\ 
+    &< \sum_{k = 0}^{n - 1} (m_k + \frac{\epsilon}{2(b - a)}) (x_{k + 1} - x_k) \\ 
+    &= \sum_{k = 0}^{n - 1} m_k (x_{k + 1} - x_k) + \sum_{k = 0}^{n - 1} \frac{\epsilon}{2(b - a)} (x_{k + 1} - x_k) \\ 
+    &= L(f, P) + \frac{\epsilon}{2(b - a)} \cdot (b - a) \\ 
+    &= L(f, P) + \frac{\epsilon}{2} \numberthis \label{eqn:riemann-implies-darboux-lower-1-cleaned}
+  \end{align*}
+  
+  However, since $C_1$ and $C_2$ may not necessarily be equal, we need some way to relate \Cref{eqn:riemann-implies-darboux-upper-1-cleaned} and \Cref{eqn:riemann-implies-darboux-lower-1-cleaned}. We apply \Cref{eqn:riemann-implies-darboux-def-cleaned} to get
+  \begin{align*}
+    R + \epsilon > U(f, P) - \frac{\epsilon}{2} \\ 
+    R - \epsilon < L(f, P) + \frac{\epsilon}{2}
+  \end{align*}
+  and a little bit of rearranging gives
+  \begin{align}
+    R + \frac{\epsilon}{2} + \frac{\epsilon}{2} > U(f, P) \label{eqn:riemann-implies-darboux-upper-2-cleaned} \\ 
+    R - \frac{\epsilon}{2} - \frac{\epsilon}{2} < L(f, P) \label{eqn:riemann-implies-darboux-lower-2-cleaned}
+  \end{align}
+
+  Recall that our choice of $P$ depends on $\epsilon$, so we cannot generalise this to all $\epsilon > 0$ yet. But then
+  \[
+    U(f, P) \geq U(f) \qquad \text{and} \qquad L(f, P) \leq L(f)
+  \]
+  for every partition $P$. Substituting into \Cref{eqn:riemann-implies-darboux-upper-2-cleaned} and \Cref{eqn:riemann-implies-darboux-lower-2-cleaned} gives
+  \begin{align*}
+    R + \epsilon > U(f) \\ 
+    R - \epsilon < L(f)
+  \end{align*}
+  Since this holds for every $\epsilon > 0$, we have
+  \[
+    R \geq U(f) \qquad \text{and} \qquad R \leq L(f)
+  \]
+  so it follows that $U(f) \leq L(f)$. But then $L(f) \leq U(f)$ by \Cref{prop:lower-upper-darboux-integral}. So $L(f) = U(f) = R$.
+
+  \textbf{Darboux implies Riemann.} Fix $\epsilon > 0$. Since $f$ is Darboux integrable:
+  \begin{itemize}
+    \item By the Cauchy criterion, there exists a partition $Q$ of $[a, b]$ such that
+      \begin{equation}
+        U(f, Q) - L(f, Q) < \frac{\epsilon}{4} \label{eqn:darboux-implies-riemann-cauchy-cleaned}
+      \end{equation}
+    \item $f$ is bounded, say $\abs{f} \leq M$.
+  \end{itemize}
+  Let $P$ be a partition of $[a, b]$, and suppose $\norm{P} < \delta$ for some $\delta > 0$ which we will find later. Suppose $Q$ consists of $m$ subintervals, and therefore $m + 1$ endpoints. Since $a$ and $b$ are common to both $P$ and $Q$, there are at most $m - 1$ endpoints in $Q$ that are not in $P$. So there are at most $m - 1$ subintervals in $P$ which contain these endpoints (that are in $Q$ but not in $P$). 
+  
+  Consider $P' = P \cup Q$. Suppose $I_k$ is a subinterval in $P$ which contains at least one endpoint in $Q$ not in $P$. Then the terms corresponding to $I_k$ in $U(f, P')$ and $U(f, P)$ differ by at most $2M \abs{I_k}$. 
+  
+  There are at most $m - 1$ of these differing terms. Also, we have assumed that $\norm{P} < \delta$, so any of these differing subintervals satisfy $\abs{I_k} < \delta$. It follows that
+  \[
+    U(f, P) - U(f, P') \leq 2(m - 1)M\delta
+  \]
+  By exactly the same reasoning,
+  \[
+    L(f, P') - L(f, P) \leq 2(m - 1)M\delta
+  \]
+
+  Now that we have related the sums with $\delta$, what about $\epsilon$? The only place where we have encountered $\epsilon$ so far is \Cref{eqn:darboux-implies-riemann-cauchy-cleaned}. This means we have to relate these inequalities to $U(f, Q)$ and $L(f, Q)$. This isn't too hard: since $P'$ refines $Q$,
+  \[
+    U(f, Q) \geq U(f, P') \qquad \text{and} \qquad L(f, Q) \leq L(f, P')
+  \]
+  A little bit of rearranging gives
+  \begin{align*}
+    U(f, P) \leq U(f, Q) + 2(m - 1)M\delta \\
+    L(f, P) \geq L(f, Q) - 2(m - 1)M\delta 
+  \end{align*}
+  Hence,
+  \[
+    U(f, P) - L(f, P) \leq U(f, Q) - L(f, Q) + \underbrace{4(m - 1)M\delta}_{\text{e.g. $\epsilon / 2$}} \leq \frac{3\epsilon}{4} < \epsilon \\ 
+  \]
+  Observe that
+  \[
+    L(f, P) \leq S(f, P, C) \leq U(f, P)
+  \]
+  for any tagged partition $(P, C)$. So
+  \[
+    \abs{S(f, P, C) - D} < \epsilon
+  \]
+  for every tagged partition $(P, C)$ with $\norm{P} < \delta$, where
+  \[
+    \delta = \frac{\epsilon}{8(m - 1)M}
+  \]
+\end{proof}
+
+\section{Analogue version of triangle inequality}
+We can generalise, in some sense, the triangle inequality to integrals.
+\begin{lemma}
+  If $f \leq g$, then
+  \[
+    \int_a^b f(x) \! \di x \leq \int_a^b g(x) \! \di x
+  \]
+  \label{lemma:integral-leq}
+\end{lemma}
+\begin{proof}
+  We use the linearity of integrals without proof.
+  \begin{align*}
+    \begin{aligned}
+      \int_a^b g - \int_a^b f &= \int_a^b (f - g) && \text{by linearity} \\ 
+      &\geq \int_a^b 0 \\ 
+      &= 0
+    \end{aligned}
+  \end{align*}
+  and the result follows.
+\end{proof}
+\begin{prop}[Analogue version of triangle inequality]
+  For every function $f: [a, b] \to \R$,
+  \[
+    \abs{\int_a^b f(x) \, \di x} \leq \int_a^b \abs{f(x)} \, \di x
+  \]
+\end{prop}
+\begin{proof}
+  Observe that
+  \[
+    -\abs{f} \leq f \leq \abs{f}
+  \]
+  By \Cref{lemma:integral-leq},
+  \[
+    \int_a^b -\abs{f} \leq \int_a^b f \leq \int_a^b \abs{f}
+  \]
+  and the result follows.
+\end{proof}

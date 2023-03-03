@@ -75,6 +75,15 @@
 % Put x \to \infty below \lim
 \let\svlim\lim\def\lim{\svlim\limits}
 
+% Upper and lower Darboux integrals
+% Usage: \upperint{lower bound}{upper bound}
+\newcommand{\upperint}[2]{
+  \overline{\int_{#1}^{#2}}
+}
+\newcommand{\lowerint}[2]{
+  \underline{\int_{#1}^{#2}}
+}
+
 %Make implies and impliedby shorter
 \let\implies\Rightarrow
 \let\impliedby\Leftarrow
